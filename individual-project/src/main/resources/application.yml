@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/glovo
+    username: root
+    password: L9zqLbRt
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    user:
+      name: user
+      password: password
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
