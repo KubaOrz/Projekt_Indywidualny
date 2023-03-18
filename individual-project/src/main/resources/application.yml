@@ -17,3 +17,5 @@ spring:
         format_sql: true
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
+server:
+  address: 0.0.0.0
