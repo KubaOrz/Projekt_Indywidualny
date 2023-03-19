@@ -13,7 +13,7 @@ const AxiosProvider = ({children}) => {
   });
 
   const publicAxios = axios.create({
-    baseURL: 'https://3b36-185-186-16-243.eu.ngrok.io',
+    baseURL: 'https://4e01-185-186-16-243.eu.ngrok.io',
   });
 
   authAxios.interceptors.request.use(

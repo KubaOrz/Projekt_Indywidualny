@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Button, View, Text, TextInput } from 'react-native';
+import { Button, View, Text, TextInput, StyleSheet } from 'react-native';
 import { AuthContext } from '../../context/AuthContext';
 import { AxiosContext } from '../../context/AxiosContext';
 import {useState, useContext, } from 'react';
 import * as SecureStore from 'expo-secure-store';
 
 
-export default function LoginScreen({navigation}) {
+export default function LoginForm({navigation}) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -37,7 +37,7 @@ export default function LoginScreen({navigation}) {
     }
 
     return (
-        <View>
+        <View style = {styles.container}>
             <Text>Zaloguj się!</Text>
             <TextInput placeholder='login' onChangeText={enteredEmail => setEmail(enteredEmail)} />
             <TextInput placeholder='hasło' onChangeText={enteredPassword => setPassword(enteredPassword)} secureTextEntry={true}/>
@@ -46,3 +46,9 @@ export default function LoginScreen({navigation}) {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+      padding: 20,
+    },
+  });

@@ -2,12 +2,12 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LoginScreen from './screens/default/LoginScreen';
-import MainScreen from './screens/authenticated/MainScreen';
 import React from 'react';
 import { useCallback, useContext, useState, useEffect } from 'react';
 import { AuthContext } from './context/AuthContext';
 import * as SecureStore from 'expo-secure-store';
+import DefaultRoot from './screens/default/DefaultRoot';
+import MainScreen from './screens/authenticated/MainScreen'
 
 const AuthenticatedStack = createNativeStackNavigator();
 const DefaultStack = createNativeStackNavigator();
@@ -51,17 +51,17 @@ export default function Controller() {
   } else if (authContext.authState.authenticated === false) {
     return (
       <NavigationContainer>
-        <AuthenticatedStack.Navigator>
-          <AuthenticatedStack.Screen name = "Login" component={LoginScreen} />
-        </AuthenticatedStack.Navigator>
+        <DefaultStack.Navigator>
+          <DefaultStack.Screen name = "DefaultRoot" component={DefaultRoot} />
+        </DefaultStack.Navigator>
       </NavigationContainer>
     )
   } else {
     return (
       <NavigationContainer>
-        <DefaultStack.Navigator>
-          <DefaultStack.Screen name = "Main" component={MainScreen} />
-        </DefaultStack.Navigator>
+        <AuthenticatedStack.Navigator>
+          <AuthenticatedStack.Screen name = "Main" component={MainScreen} />
+        </AuthenticatedStack.Navigator>
       </NavigationContainer>
     )
   }

@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, TextInput, Button } from 'react-native';
+import { AuthContext } from '../../context/AuthContext';
+import { AxiosContext } from '../../context/AxiosContext';
 
-export default function UserForm() {
+
+export default function RegisterForm(props) {
+
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
@@ -9,9 +13,30 @@ export default function UserForm() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  const handleSubmit = () => {
-    // handle form submission logic here
-  };
+  const authContext = useContext(AuthContext);
+  const {publicAxios} = useContext(AxiosContext);
+
+  function registerUser() {
+    publicAxios.post('/auth/register', {
+      name: name,
+      surname: surname,
+      email: email,
+      password: password,
+      phoneNumber: phoneNumber,
+      role: props.role
+  }).then((response) => {
+      const {accessToken} = response.data;
+      authContext.setAuthState({
+          accessToken,
+          authenticated: true
+      });
+
+      // Keychain.setGenericPassword('token', JSON.stringify(accessToken));
+      SecureStore.setItemAsync('token', JSON.stringify(accessToken));
+  }).catch(error => {
+      console.error(error);
+  })
+  }
 
   return (
     <View>
@@ -48,7 +73,7 @@ export default function UserForm() {
         onChangeText={phoneNumber => setPhoneNumber(phoneNumber)}
         keyboardType="phone-pad"
       />
-      <Button title="Submit" onPress={handleSubmit} />
+      <Button title="Zarejestruj" onPress={() => registerUser()} />
     </View>
   );
 };
