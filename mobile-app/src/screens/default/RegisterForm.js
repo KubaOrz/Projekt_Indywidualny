@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react';
-import { View, TextInput, Pressable, Text } from 'react-native';
+import { View, TextInput, Pressable, Text, TouchableOpacity } from 'react-native';
 import { AuthContext } from '../../context/AuthContext';
 import { AxiosContext } from '../../context/AxiosContext';
 import FormStyles from '../../styles/FormStyles';
@@ -35,16 +35,42 @@ export default function RegisterForm(props) {
       phoneNumber: phoneNumber,
       role: props.role
     }).then((response) => {
-      const {accessToken} = response.data;
+      const responseData = response.data;
+      const user = {
+        name: responseData.name,
+        surname: responseData.surname,
+        email: responseData.email,
+        phoneNumber: responseData.phoneNumber
+      }
+
       authContext.setAuthState({
-          accessToken,
-          authenticated: true
+          accessToken: responseData.token,
+          authenticated: true,
+          userDetails: user
       });
 
-      // Keychain.setGenericPassword('token', JSON.stringify(accessToken));
-      SecureStore.setItemAsync('token', JSON.stringify(accessToken));
+      SecureStore.setItemAsync('token', JSON.stringify(responseData.token));
+      SecureStore.setItemAsync('userDetails', JSON.stringify(user));
     }).catch(error => {
-      console.error(error);
+      // console.error(error.response.status);
+      switch(error.response.status) {
+        case 404:
+          alertTitle.current = 'Nie znaleziono';
+          alertMessage.current = 'Nie znaleziono zasobu!';
+          setShowSubmitAlert(true);
+        case 500:
+          alertTitle.current = 'Błąd serwera';
+          alertMessage.current = 'Nie udało się połączyć z serwerem!';
+          setShowSubmitAlert(true);
+        case 409:
+          alertTitle.current = 'Konflikt';
+          alertMessage.current = 'Istnieje już użytkownik o podanym adresie e-mail!';
+          setShowSubmitAlert(true);
+        default:
+          alertTitle.current = 'Błąd';
+          alertMessage.current = 'Wystąpił błąd, Spróbuj ponownie!';
+          setShowSubmitAlert(true);
+      }
     })
   }
 
@@ -162,9 +188,9 @@ export default function RegisterForm(props) {
         style = {FormStyles.textInput}
       />
       {phoneValidationError && <Text style = {FormStyles.errorText}>{phoneValidationError}</Text>}
-      <Pressable onPress={() => handleSubmit()} style = {FormStyles.defaultButton}>
+      <TouchableOpacity onPress={() => handleSubmit()} style = {FormStyles.defaultButton}>
         <Text style = {FormStyles.defaultText}>Zarejestruj</Text>
-      </Pressable>
+      </TouchableOpacity>
       {showSubmitAlert && 
         <FailureAlert title = {alertTitle.current} message = {alertMessage.current} onClose={() => setShowSubmitAlert(false)}/>
       }

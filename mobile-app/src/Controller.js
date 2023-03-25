@@ -20,13 +20,16 @@ export default function Controller() {
 
   const loadToken = useCallback(async () => {
     try {
-    //   const credentials = await Keychain.getGenericPassword();
       const credentials = await SecureStore.getItemAsync('token');
-      const token = JSON.parse(credentials.password);
+      const token = JSON.parse(credentials);
+
+      const userDetails = await SecureStore.getItemAsync('userDetails');
+      const user = JSON.parse(userDetails);
 
       authContext.setAuthState({
-        accessToken: token.accessToken || null,
-        authenticated: token.accessToken !== null
+        accessToken: token || null,
+        authenticated: token !== null,
+        userDetails: user
       });
       setStatus('success');
     } catch (error) {

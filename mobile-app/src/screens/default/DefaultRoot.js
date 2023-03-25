@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ImageBackground } from "react-native";
-import { View, ScrollView, Button, StyleSheet, Pressable, Text, Image } from "react-native";
+import { View, ScrollView, TouchableOpacity, StyleSheet, Pressable, Text } from "react-native";
+import FormStyles from "../../styles/FormStyles";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 
@@ -26,14 +27,16 @@ export default function DefaultRoot() {
         <ScrollView style = {styles.container}>
             <View style = {styles.userChoiceContainer}>
                 <View style = {styles.buttonContainer}>
-                    <Pressable style = {styles.userChoiceButton} onPress = {() => changeUserType('ROLE_USER')}>
+                    <Pressable style = {[styles.userChoiceButton, userType === 'ROLE_USER' && styles.userChoiceButtonPressed]} 
+                    onPress = {() => changeUserType('ROLE_USER')}>
                         <ImageBackground source = {require('../../../assets/trolley.png')} style = {styles.backgroundImage} >
                         </ImageBackground>
                     </Pressable>
                     <Text style = {styles.label}>Zamawiający</Text>
                 </View>
                 <View style = {styles.buttonContainer}>
-                    <Pressable style = {styles.userChoiceButton} onPress = {() => changeUserType('ROLE_SUPPLIER')}>
+                    <Pressable style = {[styles.userChoiceButton, userType === 'ROLE_SUPPLIER' && styles.userChoiceButtonPressed]}
+                     onPress = {() => changeUserType('ROLE_SUPPLIER')}>
                         <ImageBackground source = {require('../../../assets/delivery.png')} style = {styles.backgroundImage} >
                         </ImageBackground>
                     </Pressable>
@@ -42,18 +45,22 @@ export default function DefaultRoot() {
             </View>
             {displayLoginForm &&
                 <View style = {styles.formContainer}>
-                    <View>
+                    <View style = {{alignItems: 'center'}}>
                         <Text style = {styles.label}>Nie masz konta?</Text>
-                        <Button title = "Zarejestruj się" onPress = {() => switchFormType()} />
+                        <TouchableOpacity style = {FormStyles.defaultButton} onPress = {() => switchFormType()} >
+                            <Text style = {FormStyles.defaultText}>Zarejestruj się!</Text>
+                        </TouchableOpacity>
                     </View>
                     <LoginForm />
                 </View>
             }
             {displayRegisterForm && 
                 <View style = {styles.formContainer}>
-                    <View>
+                    <View style = {{alignItems: 'center'}}>
                         <Text style = {styles.label}>Masz już konto?</Text>
-                        <Button title = "Zaloguj się" onPress = {() => switchFormType()} />
+                        <TouchableOpacity style = {FormStyles.defaultButton} onPress = {() => switchFormType()}>
+                            <Text style = {FormStyles.defaultText}>Zaloguj się!</Text>
+                        </TouchableOpacity>
                     </View>
                     <RegisterForm role = {userType}/>
                 </View>
@@ -84,6 +91,11 @@ const styles = StyleSheet.create({
         padding: 8,
     },
 
+    userChoiceButtonPressed: {
+        borderWidth: 5,
+        borderColor: '#C10D49'
+    },
+
     backgroundImage: {
         width: '100%',
         height: '100%',
@@ -108,4 +120,4 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 30
     }
-  });
+});

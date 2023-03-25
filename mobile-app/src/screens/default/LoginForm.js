@@ -1,39 +1,75 @@
 import * as React from 'react';
-import { Pressable, View, Text, TextInput, StyleSheet } from 'react-native';
+import { Pressable, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { AuthContext } from '../../context/AuthContext';
 import { AxiosContext } from '../../context/AxiosContext';
-import {useState, useContext, } from 'react';
+import {useState, useContext, useRef } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import FormStyles from '../../styles/FormStyles';
+import FailureAlert from '../../alerts/FailureAlert';
 
 export default function LoginForm({navigation}) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loginStatus, setLoginStatus] = useState('');
 
     const authContext = useContext(AuthContext);
     const {publicAxios} = useContext(AxiosContext);
 
+    const [showSubmitAlert, setShowSubmitAlert] = useState(false);
+    var alertTitle = useRef('');
+    var alertMessage = useRef('');
+
     function login() {
-        setLoginStatus('');
         publicAxios.post('/auth/login', {
             email: email,
             password: password
         }).then((response) => {
-            const {accessToken} = response.data;
+            const responseData = response.data;
+            const user = {
+                name: responseData.name,
+                surname: responseData.surname,
+                email: responseData.email,
+                phoneNumber: responseData.phoneNumber
+            }
+
             authContext.setAuthState({
-                accessToken,
-                authenticated: true
+                accessToken: responseData.token,
+                authenticated: true,
+                userDetails: user
             });
 
-            // Keychain.setGenericPassword('token', JSON.stringify(accessToken));
-            SecureStore.setItemAsync('token', JSON.stringify(accessToken));
+            SecureStore.setItemAsync('token', JSON.stringify(responseData.token));
+            SecureStore.setItemAsync('userDetails', JSON.stringify(user));
         }).catch(error => {
-            setLoginStatus('Niepoprawne dane!');
-            console.error(error);
+            switch(error.response.status) {
+                case 403:
+                  alertTitle.current = 'Niepoprawne dane!';
+                  alertMessage.current = 'Adres e-mail lub hasło jest niepoprawne!';
+                  setShowSubmitAlert(true);
+                case 404:
+                  alertTitle.current = 'Nie znaleziono zasobu!';
+                  alertMessage.current = 'Nie udało sie znaleźć zasobu!';
+                  setShowSubmitAlert(true);
+                case 500:
+                  alertTitle.current = 'Błąd serwera';
+                  alertMessage.current = 'Nie udało się połączyć z serwerem!';
+                  setShowSubmitAlert(true);
+                default:
+                  alertTitle.current = 'Błąd';
+                  alertMessage.current = 'Wystąpił błąd, Spróbuj ponownie!';
+                  setShowSubmitAlert(true);
+              }
         })
+    }
 
+    function validateLoginData() {
+        if (!(email && password)) {
+            alertTitle.current = 'brak danych';
+            alertMessage.current = 'Nie podano danych do logowania!';
+            setShowSubmitAlert(true);
+        } else {
+            login();
+        }
     }
 
     return (
@@ -41,10 +77,12 @@ export default function LoginForm({navigation}) {
             <TextInput placeholder='login' onChangeText={enteredEmail => setEmail(enteredEmail)} style = {FormStyles.textInput} />
             <TextInput placeholder='hasło' onChangeText={enteredPassword => setPassword(enteredPassword)} secureTextEntry={true} style = {FormStyles.textInput}/>
             {/* <Button title = "zaloguj" onPress = {() => login()}/> */}
-            <Pressable onPress = {() => login()} style = {FormStyles.defaultButton}>
+            <TouchableOpacity onPress = {() => validateLoginData()} style = {FormStyles.defaultButton}>
                 <Text style = {FormStyles.defaultText}>Zaloguj</Text>
-            </Pressable>
-            <Text>{loginStatus}</Text>
+            </TouchableOpacity>
+            {showSubmitAlert && 
+                <FailureAlert title = {alertTitle.current} message = {alertMessage.current} onClose={() => setShowSubmitAlert(false)}/>
+            }
         </View>
     )
 }
