@@ -51,7 +51,7 @@ export default function Controller() {
   } else if (authContext.authState.authenticated === false) {
     return (
       <NavigationContainer>
-        <DefaultStack.Navigator>
+        <DefaultStack.Navigator screenOptions={{headerShown: false}}>
           <DefaultStack.Screen name = "DefaultRoot" component={DefaultRoot} />
         </DefaultStack.Navigator>
       </NavigationContainer>
@@ -59,7 +59,7 @@ export default function Controller() {
   } else {
     return (
       <NavigationContainer>
-        <AuthenticatedStack.Navigator>
+        <AuthenticatedStack.Navigator screenOptions={{headerShown: false}}>
           <AuthenticatedStack.Screen name = "Main" component={MainScreen} />
         </AuthenticatedStack.Navigator>
       </NavigationContainer>

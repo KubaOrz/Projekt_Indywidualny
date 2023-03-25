@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Button, View, Text, TextInput, StyleSheet } from 'react-native';
+import { Pressable, View, Text, TextInput, StyleSheet } from 'react-native';
 import { AuthContext } from '../../context/AuthContext';
 import { AxiosContext } from '../../context/AxiosContext';
 import {useState, useContext, } from 'react';
 import * as SecureStore from 'expo-secure-store';
-
+import FormStyles from '../../styles/FormStyles';
 
 export default function LoginForm({navigation}) {
 
@@ -37,18 +37,14 @@ export default function LoginForm({navigation}) {
     }
 
     return (
-        <View style = {styles.container}>
-            <Text>Zaloguj się!</Text>
-            <TextInput placeholder='login' onChangeText={enteredEmail => setEmail(enteredEmail)} />
-            <TextInput placeholder='hasło' onChangeText={enteredPassword => setPassword(enteredPassword)} secureTextEntry={true}/>
-            <Button title = "zaloguj" onPress = {() => login()}/>
+        <View style = {FormStyles.container}>
+            <TextInput placeholder='login' onChangeText={enteredEmail => setEmail(enteredEmail)} style = {FormStyles.textInput} />
+            <TextInput placeholder='hasło' onChangeText={enteredPassword => setPassword(enteredPassword)} secureTextEntry={true} style = {FormStyles.textInput}/>
+            {/* <Button title = "zaloguj" onPress = {() => login()}/> */}
+            <Pressable onPress = {() => login()} style = {FormStyles.defaultButton}>
+                <Text style = {FormStyles.defaultText}>Zaloguj</Text>
+            </Pressable>
             <Text>{loginStatus}</Text>
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-      padding: 20,
-    },
-  });
