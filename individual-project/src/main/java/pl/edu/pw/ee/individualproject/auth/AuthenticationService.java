@@ -34,7 +34,7 @@ public class AuthenticationService {
                 .build();
         User savedUser = repository.save(user);
         String token = jwtService.generateToken(savedUser);
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(token, savedUser);
     }
 
     public AuthenticationResponse login(LoginRequest request) {
@@ -45,6 +45,6 @@ public class AuthenticationService {
                 () -> new UsernameNotFoundException("User not found!")
         );
         String token = jwtService.generateToken(user);
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(token, user);
     }
 }
