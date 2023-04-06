@@ -17,5 +17,9 @@ spring:
         format_sql: true
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
+jwt:
+  key: 4125442A472D4B6150645367566B59703373367639792F423F4528482B4D6251
+  token-expiration: 1200000
+  refresh-token-expiration: 2400000
 server:
   address: 0.0.0.0

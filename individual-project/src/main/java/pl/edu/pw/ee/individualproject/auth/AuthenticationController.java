@@ -1,9 +1,9 @@
 package pl.edu.pw.ee.individualproject.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.pw.ee.individualproject.auth.token.RefreshResponse;
 
 @RestController
 @RequestMapping("/auth")
@@ -22,8 +22,8 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.login(request));
     }
 
-    @GetMapping("/test")
-    public String test() {
-        return "Działa";
+    @PostMapping("/refresh")
+    public ResponseEntity<RefreshResponse> refreshToken(@RequestBody String refreshToken) {
+        return ResponseEntity.ok(authenticationService.refresh(refreshToken));
     }
 }
