@@ -7,7 +7,7 @@ import * as SecureStore from 'expo-secure-store';
 import FormStyles from '../../styles/FormStyles';
 import FailureAlert from '../../alerts/FailureAlert';
 
-export default function LoginForm({navigation}) {
+export default function LoginForm(props) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -22,7 +22,8 @@ export default function LoginForm({navigation}) {
     function login() {
         publicAxios.post('/auth/login', {
             email: email,
-            password: password
+            password: password,
+            role: props.role
         }).then((response) => {
             const responseData = response.data;
             const user = {

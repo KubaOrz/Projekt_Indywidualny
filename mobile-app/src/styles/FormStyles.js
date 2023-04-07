@@ -30,7 +30,6 @@ export default StyleSheet.create({
     },
 
     defaultText: {
-        marginTop: 5,
         color: 'white',
         fontSize: 16,
         fontWeight: 'bold',

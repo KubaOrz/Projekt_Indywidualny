@@ -67,7 +67,12 @@ public class JWTService {
         return !isExpired && !currentToken.isRevoked();
     }
 
-    private Date getExpirationDate(String token) {
+    public boolean isValid(Token token) {
+        boolean isExpired = getExpirationDate(token.getToken()).before(new Date(System.currentTimeMillis()));
+        return !isExpired && !token.isRevoked();
+    }
+
+    public Date getExpirationDate(String token) {
         return getAllClaims(token).getExpiration();
     }
 

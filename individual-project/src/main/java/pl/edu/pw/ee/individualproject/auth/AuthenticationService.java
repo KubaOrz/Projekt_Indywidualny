@@ -11,6 +11,7 @@ import pl.edu.pw.ee.individualproject.configuration.JWTService;
 import pl.edu.pw.ee.individualproject.exception.EntityNotFoundException;
 import pl.edu.pw.ee.individualproject.exception.InvalidTokenException;
 import pl.edu.pw.ee.individualproject.exception.UserAlreadyExistsException;
+import pl.edu.pw.ee.individualproject.exception.UserAlreadyLoggedInException;
 import pl.edu.pw.ee.individualproject.user.User;
 import pl.edu.pw.ee.individualproject.user.UserRepository;
 
@@ -50,16 +51,23 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse login(LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
-        User user = repository.findByEmail(request.getEmail()).orElseThrow(
+        User user = repository.findByEmailAndRole(request.getEmail(), request.getRole()).orElseThrow(
                 () -> new UsernameNotFoundException("User not found!")
         );
 
         Token token = tokenRepository.findByUser(user).orElseThrow(EntityNotFoundException::new);
+
+        if (jwtService.isValid(token)) {
+            throw new UserAlreadyLoggedInException("User is already logged in on different device!");
+        }
+
         String tokenStr = jwtService.generateToken(user);
         token.setToken(tokenStr);
+        token.setRevoked(false);
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        );
 
         RefreshToken refreshToken = refreshTokenRepository.findByUser(user).orElseThrow(EntityNotFoundException::new);
         String refreshTokenStr = jwtService.generateRefreshToken(user);

@@ -8,8 +8,60 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: 50,
-        flex: 1,
+        width: '80%',
         borderColor: 'white',
         borderWidth: 2,
     },
+
+    tileRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 55
+    },
+
+    tileContainer: {
+        marginBottom: 40,
+        width: '100%'
+    },
+
+    tile: {
+        width: '70%',
+        aspectRatio: 1,
+        backgroundColor: 'white',
+        borderRadius: 8,
+        padding: 8,
+    },
+
+    tileBackgroundImage: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover',
+    },
+
+    labeledTileContainer: {
+        alignItems: 'center',
+        flex: 1
+    },
+
+    label: {
+        marginTop: 5,
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+
+    header: {
+        color: 'white',
+        fontSize: 30,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+
+    defaultText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    }
 });

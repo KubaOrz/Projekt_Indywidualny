@@ -25,5 +25,10 @@ public class ExceptionConfig {
     public ErrorMessage handleInvalidTokenException(InvalidTokenException e) {
         return new ErrorMessage(e.getMessage(), new Date());
     }
+
+    @ExceptionHandler(value = UserAlreadyLoggedInException.class)
+    public ErrorMessage handleUserAlreadyLoggedInException(UserAlreadyLoggedInException e) {
+        return new ErrorMessage(e.getMessage(), new Date());
+    }
 }
 
