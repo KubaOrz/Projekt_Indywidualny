@@ -9,11 +9,11 @@ const AxiosProvider = ({children}) => {
   const authContext = useContext(AuthContext);
 
   const authAxios = axios.create({
-    baseURL: 'https://52c9-185-186-16-243.eu.ngrok.io',
+    baseURL: 'https://cfd4-185-186-16-243.eu.ngrok.io',
   });
 
   const publicAxios = axios.create({
-    baseURL: 'https://52c9-185-186-16-243.eu.ngrok.io',
+    baseURL: 'https://cfd4-185-186-16-243.eu.ngrok.io',
   });
 
   authAxios.interceptors.request.use(

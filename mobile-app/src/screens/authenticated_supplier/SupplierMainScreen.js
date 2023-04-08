@@ -5,7 +5,8 @@ import { useContext } from 'react';
 import DefaultStyles from '../../styles/DefaultStyles';
 import Tile from '../../universal-components/Tile';
 import { AxiosContext } from '../../context/AxiosContext';
-export default function MainScreen({navigation}) {
+
+export default function SupplierMainScreen() {
 
     const authContext = useContext(AuthContext);
     const {authAxios} = useContext(AxiosContext);
@@ -26,32 +27,6 @@ export default function MainScreen({navigation}) {
     return (
         <View style = {styles.container}>
             <Text style = {DefaultStyles.header}>Witaj {authContext.getUserDetails().name}!</Text>
-            
-            <View style = {DefaultStyles.tileContainer}>
-                <View style = {DefaultStyles.tileRow}>
-                    <Tile
-                    onPress = {test} 
-                    backgroundImage = {require('../../../assets/shopping-bag.png')} 
-                    label = {'Zakupy'} />
-                    
-                    <Tile
-                    onPress = {test} 
-                    backgroundImage = {require('../../../assets/shopping-online.png')} 
-                    label = {'Moje zamówienia'} />
-                </View>
-                
-                <View style = {DefaultStyles.tileRow}>
-                    <Tile
-                    onPress = {test} 
-                    backgroundImage = {require('../../../assets/clock.png')} 
-                    label = {'Historia zamówień'} />
-                    
-                    <Tile
-                    onPress = {test} 
-                    backgroundImage = {require('../../../assets/user.png')} 
-                    label = {'Profil'} />
-                </View>
-            </View>
 
             <TouchableOpacity onPress = {() => logout()} style = {DefaultStyles.defaultButton}>
                 <Text style = {DefaultStyles.defaultText}>Wyloguj</Text>

@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -7,36 +6,43 @@ import { useCallback, useContext, useState, useEffect } from 'react';
 import { AuthContext } from './context/AuthContext';
 import * as SecureStore from 'expo-secure-store';
 import DefaultRoot from './screens/default/DefaultRoot';
-import MainScreen from './screens/authenticated/MainScreen'
+import UserMainScreen from './screens/authenticated_user/UserMainScreen';
+import SupplierMainScreen from './screens/authenticated_supplier/SupplierMainScreen';
 
-const AuthenticatedStack = createNativeStackNavigator();
+const AuthenticatedUserStack = createNativeStackNavigator();
+const AuthenticatedSupplierStack = createNativeStackNavigator();
 const DefaultStack = createNativeStackNavigator();
 
 
 export default function Controller() {
 
   const authContext = useContext(AuthContext);
-  const [status, setStatus] = useState('loading');
 
   const loadToken = useCallback(async () => {
     try {
-      const credentials = await SecureStore.getItemAsync('token');
-      const token = JSON.parse(credentials);
+      const tokenData = await SecureStore.getItemAsync('token');
+      const token = JSON.parse(tokenData);
+
+      const refreshtokenData = await SecureStore.getItemAsync('refreshToken');
+      const refreshToken = JSON.parse(refreshtokenData);
 
       const userDetails = await SecureStore.getItemAsync('userDetails');
       const user = JSON.parse(userDetails);
 
       authContext.setAuthState({
         accessToken: token || null,
+        refreshToken: refreshToken || null,
         authenticated: token !== null,
-        userDetails: user
+        userDetails: user || null
       });
-      setStatus('success');
+
     } catch (error) {
       setStatus('error');
       authContext.setAuthState({
         accessToken: null,
-        authenticated: false
+        refreshToken: null,
+        authenticated: false,
+        userDetails: null
       });
     }
   }, []);
@@ -45,13 +51,7 @@ export default function Controller() {
     loadToken();
   }, [loadToken]);
 
-  if (status === 'loading') {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    )
-  } else if (authContext.authState.authenticated === false) {
+  if (!authContext.authState.authenticated) {
     return (
       <NavigationContainer>
         <DefaultStack.Navigator screenOptions={{headerShown: false}}>
@@ -59,12 +59,20 @@ export default function Controller() {
         </DefaultStack.Navigator>
       </NavigationContainer>
     )
+  } else if (authContext.authState.authenticated === 'ROLE_USER') {
+    return (
+      <NavigationContainer>
+        <AuthenticatedUserStack.Navigator screenOptions={{headerShown: false}}>
+          <AuthenticatedUserStack.Screen name = "Main" component={UserMainScreen} />
+        </AuthenticatedUserStack.Navigator>
+      </NavigationContainer>
+    )
   } else {
     return (
       <NavigationContainer>
-        <AuthenticatedStack.Navigator screenOptions={{headerShown: false}}>
-          <AuthenticatedStack.Screen name = "Main" component={MainScreen} />
-        </AuthenticatedStack.Navigator>
+        <AuthenticatedSupplierStack.Navigator screenOptions={{headerShown: false}}>
+          <AuthenticatedSupplierStack.Screen name = "Main" component={SupplierMainScreen} />
+        </AuthenticatedSupplierStack.Navigator>
       </NavigationContainer>
     )
   }
