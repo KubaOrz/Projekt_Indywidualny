@@ -1,1 +1,2 @@
 # Projekt_Indywidualny
+Projekt realizowany w ramach przedmiotu Projekt Indywidualny na 4. semestrze studiów Informatyka Stosowana na Wydziale Elektrycznym Politechniki Warszawskiej. Aplikacja ma dwa typy użytkowników - zamawiających i dostawców. Zamawiający ma możliwość zamówienia produktów, a zamówienia sa później obsługiwane przez dostawców. aplikacja ma równiez umożliwiac komunikację w czasie rzeczywistym pomiędzy zamawiającym a dostawcą realizującym zamówienie.
