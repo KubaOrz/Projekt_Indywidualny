@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Pressable, View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { AuthContext } from '../../context/AuthContext';
 import { useContext } from 'react';
 import DefaultStyles from '../../styles/DefaultStyles';
@@ -32,7 +32,7 @@ export default function UserMainScreen({navigation}) {
             <View style = {DefaultStyles.tileContainer}>
                 <View style = {DefaultStyles.tileRow}>
                     <Tile
-                    onPress = {test} 
+                    onPress = {() => {navigation.navigate('Shop')}} 
                     backgroundImage = {require('../../../assets/shopping-bag.png')} 
                     label = {'Zakupy'} />
                     

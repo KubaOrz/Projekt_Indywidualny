@@ -8,6 +8,8 @@ import * as SecureStore from 'expo-secure-store';
 import DefaultRoot from './screens/default/DefaultRoot';
 import UserMainScreen from './screens/authenticated_user/UserMainScreen';
 import SupplierMainScreen from './screens/authenticated_supplier/SupplierMainScreen';
+import { CartProvider } from './context/CartContext';
+import ProductChoiceScreen from './screens/authenticated_user/product-choice-screen/ProductChoiceScreen';
 
 const AuthenticatedUserStack = createNativeStackNavigator();
 const AuthenticatedSupplierStack = createNativeStackNavigator();
@@ -32,12 +34,11 @@ export default function Controller() {
       authContext.setAuthState({
         accessToken: token || null,
         refreshToken: refreshToken || null,
-        authenticated: token !== null,
+        authenticated: user.role || null,
         userDetails: user || null
       });
 
     } catch (error) {
-      setStatus('error');
       authContext.setAuthState({
         accessToken: null,
         refreshToken: null,
@@ -62,12 +63,15 @@ export default function Controller() {
   } else if (authContext.authState.authenticated === 'ROLE_USER') {
     return (
       <NavigationContainer>
-        <AuthenticatedUserStack.Navigator screenOptions={{headerShown: false}}>
-          <AuthenticatedUserStack.Screen name = "Main" component={UserMainScreen} />
-        </AuthenticatedUserStack.Navigator>
+        <CartProvider>
+          <AuthenticatedUserStack.Navigator screenOptions={{headerShown: false}}>
+            <AuthenticatedUserStack.Screen name = "Main" component={UserMainScreen} />
+            <AuthenticatedUserStack.Screen name = "Shop" component={ProductChoiceScreen} />
+          </AuthenticatedUserStack.Navigator>
+        </CartProvider>
       </NavigationContainer>
     )
-  } else {
+  } else if (authContext.authState.authenticated === 'ROLE_SUPPLIER') {
     return (
       <NavigationContainer>
         <AuthenticatedSupplierStack.Navigator screenOptions={{headerShown: false}}>

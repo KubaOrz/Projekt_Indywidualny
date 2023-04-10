@@ -18,7 +18,8 @@ public class Shop {
 
     private String name;
 
-//    @Lob
-//    private byte[] icon;
+    @Lob
+    @Column(length = 16384)
+    private byte[] icon;
 
 }

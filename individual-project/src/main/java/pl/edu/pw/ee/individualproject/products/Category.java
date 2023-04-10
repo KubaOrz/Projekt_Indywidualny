@@ -21,4 +21,8 @@ public class Category {
 
     private String name;
 
+    @Lob
+    @Column(length = 16384)
+    private byte[] image;
+
 }
