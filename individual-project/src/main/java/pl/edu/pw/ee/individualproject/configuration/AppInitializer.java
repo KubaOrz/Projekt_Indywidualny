@@ -41,7 +41,7 @@ public class AppInitializer implements CommandLineRunner {
 
         String[] categories = {"Owoce", "Warzywa", "Mięso"};
 
-        String filePath = "individual-project/src/main/resources/images/picture.png";
+        String filePath = "src/main/resources/images/picture.png";
 
         try {
             FileInputStream fileInputStream = new FileInputStream(filePath);

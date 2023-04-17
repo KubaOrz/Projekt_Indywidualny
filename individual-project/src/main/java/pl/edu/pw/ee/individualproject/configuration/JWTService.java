@@ -64,11 +64,17 @@ public class JWTService {
         Token currentToken = tokenRepository.findByToken(token).orElseThrow(
                 () -> new InvalidTokenException("No token in database!")
         );
+//        if (isExpired) {
+//            currentToken.setExpired(true);
+//        }
         return !isExpired && !currentToken.isRevoked();
     }
 
     public boolean isValid(Token token) {
         boolean isExpired = getExpirationDate(token.getToken()).before(new Date(System.currentTimeMillis()));
+//        if (isExpired) {
+//            token.setExpired(true);
+//        }
         return !isExpired && !token.isRevoked();
     }
 

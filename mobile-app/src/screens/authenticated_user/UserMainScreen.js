@@ -1,16 +1,20 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { AuthContext } from '../../context/AuthContext';
-import { useContext } from 'react';
+import { useContext, useState, useRef } from 'react';
 import DefaultStyles from '../../styles/DefaultStyles';
 import Tile from '../../universal-components/Tile';
 import { AxiosContext } from '../../context/AxiosContext';
+import FailureAlert from '../../alerts/FailureAlert';
 
 
 export default function UserMainScreen({navigation}) {
 
     const authContext = useContext(AuthContext);
     const {authAxios} = useContext(AxiosContext);
+    const [showSubmitAlert, setShowSubmitAlert] = useState(false);
+    var alertTitle = useRef('');
+    var alertMessage = useRef('');
 
     function test() {
         console.log(authContext.getAccessToken());
@@ -21,7 +25,14 @@ export default function UserMainScreen({navigation}) {
         .then(() => {
             authContext.logout();
         }).catch((error) => {
-            console.error("Brak połączenia z serwerem!");
+            if (error.response.status === 404 || error.response.status === 403) { // tego 403 nie powinno tu być ale nie działa obsługa wyjątków w springu
+                authContext.logout();
+            } else {
+                alertTitle.current = 'Błąd serwera!';
+                alertMessage.current = 'Wystapił problem przy połączeniu z serwerem!';
+                setShowSubmitAlert(true);
+                console.error(error);
+            }
         })
     };
 
@@ -58,6 +69,10 @@ export default function UserMainScreen({navigation}) {
             <TouchableOpacity onPress = {() => logout()} style = {DefaultStyles.defaultButton}>
                 <Text style = {DefaultStyles.defaultText}>Wyloguj</Text>
             </TouchableOpacity>
+
+            {showSubmitAlert && 
+                <FailureAlert title = {alertTitle.current} message = {alertMessage.current} onClose={() => setShowSubmitAlert(false)}/>
+            }
         </View>
     )
 }
