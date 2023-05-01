@@ -78,7 +78,8 @@ public class AuthenticationService {
         return new AuthenticationResponse(tokenStr, refreshTokenStr, user);
     }
 
-    public RefreshResponse refresh(String refreshToken) {
+    public RefreshResponse refresh(RefreshRequest request) {
+        String refreshToken = request.refreshToken();
         String email = jwtService.getUserEmail(refreshToken);
         User user = repository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException("User not found!")

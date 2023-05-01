@@ -52,15 +52,11 @@ export default function Controller() {
     loadToken();
   }, [loadToken]);
 
-  if (!authContext.authState.authenticated) {
-    return (
-      <NavigationContainer>
-        <DefaultStack.Navigator screenOptions={{headerShown: false}}>
-          <DefaultStack.Screen name = "DefaultRoot" component={DefaultRoot} />
-        </DefaultStack.Navigator>
-      </NavigationContainer>
-    )
-  } else if (authContext.authState.authenticated === 'ROLE_USER') {
+  useEffect(() => {
+    console.log(authContext.authState.authenticated);
+  })
+
+  if (authContext.authState.authenticated === 'ROLE_USER') {
     return (
       <NavigationContainer>
         <CartProvider>
@@ -77,6 +73,14 @@ export default function Controller() {
         <AuthenticatedSupplierStack.Navigator screenOptions={{headerShown: false}}>
           <AuthenticatedSupplierStack.Screen name = "Main" component={SupplierMainScreen} />
         </AuthenticatedSupplierStack.Navigator>
+      </NavigationContainer>
+    )
+  } else {
+    return (
+      <NavigationContainer>
+        <DefaultStack.Navigator screenOptions={{headerShown: false}}>
+          <DefaultStack.Screen name = "DefaultRoot" component={DefaultRoot} />
+        </DefaultStack.Navigator>
       </NavigationContainer>
     )
   }

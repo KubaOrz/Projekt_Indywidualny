@@ -1,64 +1,97 @@
-import { FlatList, StyleSheet, View, Text, ScrollView } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import React, { useState, useContext, useRef, useEffect } from 'react';
 import { AuthContext } from "../../../context/AuthContext";
 import { AxiosContext } from "../../../context/AxiosContext";
 import CategoryChoiceBox from "./CategoryChoiceBox";
 import ProductBar from "./ProductBar";
 import ProductSearchBar from "./ProductSearchBar";
+import LoadingSpinner from "../../../universal-components/LoadingSpinner";
+import FailureAlert from "../../../alerts/FailureAlert";
 
 export default function ProductChoiceScreen({navigation}) {
 
     const [categories, setCategories] = useState([]);
     const [shops, setShops] = useState([]);
     const [displayedProducts, setDisplayedProducts] = useState([]);
-    const [url, setUrl] = useState('/products');
+
+    const [categoriesStatus, setCategoriesStatus] = useState('loading');
+    const [shopsStatus, setShopsStatus] = useState('loading');
+    const [productsStatus, setProductsStatus] = useState('loading');
+
+    const [showError, setShowError] = useState(false);
+
+    var url = useRef('/products');
+    var page = useRef(null);
+    var isLast = useRef(false);
 
     const authContext = useContext(AuthContext);
-    const {authAxios} = useContext(AxiosContext);
+    const {authAxios, getWithRefresh} = useContext(AxiosContext);
 
-    function loadCategories() {
-        authAxios.get('/products/category') 
-        .then((response) => {
-            setCategories(response.data)
-        }).catch((error) => {
-            console.error(error);
-        });
+    async function loadCategories() {
+        const [data, error] = await getWithRefresh('/products/category');
+        if (!error) {
+            setCategories(data);
+            setCategoriesStatus('ok');
+        } else {
+            setCategoriesStatus('error');
+            setShowError(true);
+        }
     }
 
-    function loadProducts(path) {
-        authAxios.get(path)
-        .then((response) => {
-            setDisplayedProducts(response.data.content);
-            console.log('pobieranie');
-        }).catch((error) => {
-            console.error(error);
-        });
+    async function loadProducts(path) {
+        const [data, error] = await getWithRefresh(path);
+        console.log(error);
+        if (!error) {
+            const newDisplayedProducts = displayedProducts.concat(data.content);
+            setDisplayedProducts(newDisplayedProducts);
+            page.current = data.number;
+            isLast.current = data.last;
+            setProductsStatus('ok');
+        } else {
+            setProductsStatus('error');
+            setShowError(true);
+        }
     }
 
-    function loadShops() {
-        authAxios.get('/products/shop')
-        .then((response) => {
-            setShops(response.data);
-            console.log(response.data);
-        }).catch((error) => {
-            console.error(error);
-        });
+    async function loadShops() {
+        const [data, error] = await getWithRefresh('/products/shop');
+        if (!error) {
+            setShops(data);
+            setShopsStatus('ok');
+        } else {
+            setShopsStatus('error');
+            setShowError(true);
+        }
     }
 
     useEffect(() => {
-        loadCategories();
-        loadShops();
-        loadProducts('/products');
-        console.log("use effect");
+        async function loadData() {
+            await loadCategories();
+            await loadShops();
+            await loadProducts('/products');
+        }
+        loadData();
     }, []);
 
-    useEffect(() => {
-
-    })
-
-    function loadMoreData() {
-        console.log('pobierz więcej danych');
+    function loadMoreProducts() {
+        if (!isLast.current) {
+            loadProducts(url.current + '?page=' + (page.current + 1));
+            console.log(url.current + '?page=' + (page.current + 1));
+        }
     }
+
+    function changeUrl(newUrl) {
+        setProductsStatus('loading');
+        setDisplayedProducts([]);
+        url.current = newUrl;
+        page.current = 0;
+    }
+
+    useEffect(() => {
+        if (categoriesStatus === 'ok' && shopsStatus === 'ok') {
+            loadProducts(url.current);
+        }
+    }, [url.current])
 
     const renderItem = ({ item }) => (
         <ProductBar 
@@ -71,17 +104,29 @@ export default function ProductChoiceScreen({navigation}) {
 
     return (
         <View style = {styles.container}>
-            <ProductSearchBar search = {loadProducts}/>
-            <CategoryChoiceBox categories = {categories} onPress = {loadProducts}/>
+
+            <ProductSearchBar search = {changeUrl}/>
+
+            {categoriesStatus === 'ok' &&
+            <CategoryChoiceBox categories = {categories} onPress = {changeUrl}/>
+            || <LoadingSpinner/>}
+
+            {productsStatus === 'ok' && shopsStatus === 'ok' &&
             <FlatList
                 data = {displayedProducts}
                 renderItem = {renderItem}
                 keyExtractor={item => item.id.toString()}
                 style = {{width: '90%'}}
                 showsVerticalScrollIndicator={false}
-                onEndReached={loadMoreData}
+                onEndReached={loadMoreProducts}
                 onEndReachedThreshold={0.5}
-            />        
+            />   
+            || <LoadingSpinner/>
+            }
+            {showError && 
+                <FailureAlert title = {'Błąd!'} message = {'Wystapił błąd przy połączeniu z serwerem!'} onClose={() => navigation.goBack()}/>
+            }
+
         </View>
     )
 }
