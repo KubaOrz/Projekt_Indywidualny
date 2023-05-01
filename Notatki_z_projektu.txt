@@ -1,4 +1,0 @@
-Błedy jakie zauważyłem:
-1. Jeśli zresetuję serwer, to nie mogę się wylogować na froncie
-2. Brak obsługi błędów przy wylogowywaniu (front)
-3. Nie działa error handler na serwerze
