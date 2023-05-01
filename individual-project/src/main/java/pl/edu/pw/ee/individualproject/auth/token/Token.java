@@ -22,7 +22,7 @@ public class Token {
 
     private boolean revoked;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 }

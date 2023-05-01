@@ -15,6 +15,8 @@ import pl.edu.pw.ee.individualproject.exception.UserAlreadyLoggedInException;
 import pl.edu.pw.ee.individualproject.user.User;
 import pl.edu.pw.ee.individualproject.user.UserRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -55,30 +57,29 @@ public class AuthenticationService {
                 () -> new UsernameNotFoundException("User not found!")
         );
 
-        Token token = tokenRepository.findByUser(user).orElseThrow(EntityNotFoundException::new);
-
-        if (jwtService.isValid(token)) {
-            throw new UserAlreadyLoggedInException("User is already logged in on different device!");
-        }
-
-        String tokenStr = jwtService.generateToken(user);
-        token.setToken(tokenStr);
-        token.setRevoked(false);
-
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
+
+        revokeAllTokens(user);
+
+        String tokenStr = jwtService.generateToken(user);
 
         RefreshToken refreshToken = refreshTokenRepository.findByUser(user).orElseThrow(EntityNotFoundException::new);
         String refreshTokenStr = jwtService.generateRefreshToken(user);
         refreshToken.setToken(refreshTokenStr);
 
-        tokenRepository.save(token);
+        tokenRepository.save(Token.builder()
+                .token(tokenStr)
+                .revoked(false)
+                .user(user)
+                .build());
         refreshTokenRepository.save(refreshToken);
         return new AuthenticationResponse(tokenStr, refreshTokenStr, user);
     }
 
-    public RefreshResponse refresh(String refreshToken) {
+    public RefreshResponse refresh(RefreshRequest request) {
+        String refreshToken = request.refreshToken();
         String email = jwtService.getUserEmail(refreshToken);
         User user = repository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException("User not found!")
@@ -92,11 +93,20 @@ public class AuthenticationService {
         newRefreshToken.setToken(refreshTokenStr);
         refreshTokenRepository.save(newRefreshToken);
 
-        Token token = tokenRepository.findByUser(user).orElseThrow(
-                EntityNotFoundException::new
-        );
-        token.setToken(tokenStr);
-        tokenRepository.save(token);
+        revokeAllTokens(user);
+        tokenRepository.save(Token.builder()
+                .token(tokenStr)
+                .revoked(false)
+                .user(user)
+                .build());
         return new RefreshResponse(tokenStr, refreshTokenStr);
+    }
+
+    private void revokeAllTokens(User user) {
+        List<Token> userTokens = tokenRepository.findAllByUser(user);
+
+        for (Token token: userTokens) {
+            token.setRevoked(true);
+        }
     }
 }

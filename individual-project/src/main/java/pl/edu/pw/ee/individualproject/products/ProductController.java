@@ -1,15 +1,13 @@
 package pl.edu.pw.ee.individualproject.products;
 
-import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.edu.pw.ee.individualproject.products.Product;
-import pl.edu.pw.ee.individualproject.products.ProductService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -17,10 +15,16 @@ import pl.edu.pw.ee.individualproject.products.ProductService;
 public class ProductController {
 
     private final ProductService productService;
+    private final CategoryService categoryService;
+    private final ShopService shopService;
 
     @GetMapping("")
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public ResponseEntity<Page<Product>> getAllProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> products = productService.getAllProducts(pageable);
+        return ResponseEntity.ok(products);
     }
 
     @GetMapping("/{id}")
@@ -47,5 +51,15 @@ public class ProductController {
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> products = productService.getProductsByName(name, pageable);
         return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<List<Category>> getAllCategories() {
+        return ResponseEntity.ok(categoryService.getAllCategories());
+    }
+
+    @GetMapping("/shop")
+    public ResponseEntity<List<Shop>> getAllShops() {
+        return ResponseEntity.ok(shopService.getAllShops());
     }
 }

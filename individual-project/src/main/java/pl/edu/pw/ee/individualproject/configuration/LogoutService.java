@@ -11,6 +11,7 @@ import pl.edu.pw.ee.individualproject.auth.token.RefreshTokenRepository;
 import pl.edu.pw.ee.individualproject.auth.token.Token;
 import pl.edu.pw.ee.individualproject.auth.token.TokenRepository;
 import pl.edu.pw.ee.individualproject.exception.EntityNotFoundException;
+import pl.edu.pw.ee.individualproject.exception.InvalidTokenException;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +29,9 @@ public class LogoutService implements LogoutHandler {
         }
 
         token = authorizationHeader.split(" ")[1];
-        Token accessToken = tokenRepository.findByToken(token).orElseThrow(EntityNotFoundException::new);
+        Token accessToken = tokenRepository.findByToken(token).orElseThrow(
+                () -> new InvalidTokenException("Invalid token!")
+        );
         RefreshToken refreshToken = refreshTokenRepository.findByUser(accessToken.getUser()).orElseThrow(
                 EntityNotFoundException::new
         );

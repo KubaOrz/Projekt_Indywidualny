@@ -19,15 +19,14 @@ public class Product {
 
     private Double price;
 
-    @ManyToOne
-    @JoinColumn(name = "shop_id")
-    private Shop shop;
+    @Column(name = "shop_id")
+    private Long shopId;
 
     @Lob
+    @Column(length = 16384)
     private byte[] image;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @Column(name = "category_id")
+    private Long categoryId;
 
 }

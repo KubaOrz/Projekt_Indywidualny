@@ -7,15 +7,18 @@ const {Provider} = AuthContext;
 function AuthProvider({children}) {
     const [authState, setAuthState] = useState({
         accessToken: null,
+        refreshToken: null,
         authenticated: null,
-        userDetails: null
+        userDetails: null,
     }, []);
 
     async function logout() {
         SecureStore.deleteItemAsync('token');
+        SecureStore.deleteItemAsync('refreshToken');
         SecureStore.deleteItemAsync('userDetails');
         setAuthState({
             accessToken: null,
+            refreshToken: null,
             authenticated: false,
             userDetails: null
         });
@@ -27,6 +30,10 @@ function AuthProvider({children}) {
 
     function getUserDetails() {
         return authState.userDetails;
+    };
+
+    function getRefreshToken() {
+        return authState.refreshToken;
     }
 
     return (
@@ -35,6 +42,7 @@ function AuthProvider({children}) {
             getAccessToken,
             setAuthState,
             getUserDetails,
+            getRefreshToken,
             logout
         }}>
             {children}

@@ -4,6 +4,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { AxiosContext } from '../../context/AxiosContext';
 import FormStyles from '../../styles/FormStyles';
 import FailureAlert from '../../alerts/FailureAlert'
+import * as SecureStore from 'expo-secure-store';
 
 export default function RegisterForm(props) {
 
@@ -36,23 +37,29 @@ export default function RegisterForm(props) {
       role: props.role
     }).then((response) => {
       const responseData = response.data;
+
       const user = {
         name: responseData.name,
         surname: responseData.surname,
         email: responseData.email,
-        phoneNumber: responseData.phoneNumber
+        phoneNumber: responseData.phoneNumber,
+        role: responseData.role
       }
+
+      SecureStore.setItemAsync('token', JSON.stringify(responseData.token));
+      SecureStore.setItemAsync('refreshToken', JSON.stringify(responseData.refreshToken));
+      SecureStore.setItemAsync('userDetails', JSON.stringify(user));
 
       authContext.setAuthState({
           accessToken: responseData.token,
-          authenticated: true,
+          refreshToken: responseData.refreshToken,
+          authenticated: user.role,
           userDetails: user
       });
 
-      SecureStore.setItemAsync('token', JSON.stringify(responseData.token));
-      SecureStore.setItemAsync('userDetails', JSON.stringify(user));
     }).catch(error => {
-      // console.error(error.response.status);
+      console.error(error.response.status);
+      console.log('coś się wywaliło');
       switch(error.response.status) {
         case 404:
           alertTitle.current = 'Nie znaleziono';

@@ -1,8 +1,11 @@
 package pl.edu.pw.ee.individualproject.exception;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Date;
 
@@ -17,8 +20,10 @@ public class ExceptionConfig {
     }
 
     @ExceptionHandler(value = EntityNotFoundException.class)
-    public ErrorMessage handleEntityNotFoundException(EntityNotFoundException e) {
-        return new ErrorMessage(e.getMessage(), new Date());
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorMessage> handleEntityNotFoundException(EntityNotFoundException e) {
+        ErrorMessage message = new ErrorMessage(e.getMessage(), new Date());
+        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = InvalidTokenException.class)
