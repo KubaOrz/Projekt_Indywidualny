@@ -10,10 +10,17 @@ function CartProvider({children}) {
     });
 
     function addToCart(product, count) {
-        updatedProducts = [...cartState.products, {product, count}];
+        productsInCart = [...cartState.products];
+        matchingProduct = cartState.products.find(item => item.product.productId === product.productId)
+        if (matchingProduct) {
+            matchingProduct.count += count;
+
+        } else {
+            productsInCart.push({product, count});
+        }
         updatedTotalPrice = cartState.totalPrice + product.productPrice * count;
         setCartState({
-            products: updatedProducts,
+            products: productsInCart,
             totalPrice: updatedTotalPrice
         });
     }

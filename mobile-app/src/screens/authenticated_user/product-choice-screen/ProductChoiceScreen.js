@@ -8,6 +8,7 @@ import ProductSearchBar from "./ProductSearchBar";
 import LoadingSpinner from "../../../universal-components/LoadingSpinner";
 import FailureAlert from "../../../alerts/FailureAlert";
 import CartButton from "../cart_view/CartButton";
+import CartView from "../cart_view/CartView";
 
 export default function ProductChoiceScreen({navigation}) {
 
@@ -20,6 +21,7 @@ export default function ProductChoiceScreen({navigation}) {
     const [productsStatus, setProductsStatus] = useState('loading');
 
     const [showError, setShowError] = useState(false);
+    const [showCart, setShowCart] = useState(false);
 
     var url = useRef('/products');
     var page = useRef(null);
@@ -122,9 +124,13 @@ export default function ProductChoiceScreen({navigation}) {
             />   
             || <LoadingSpinner/>
             }
-            <CartButton />
+            <CartButton onPress = {setShowCart}/>
             {showError && 
                 <FailureAlert title = {'Błąd!'} message = {'Wystapił błąd przy połączeniu z serwerem!'} onClose={() => navigation.goBack()}/>
+            }
+
+            {showCart && 
+                <CartView onClose = {setShowCart}/>
             }
 
         </View>

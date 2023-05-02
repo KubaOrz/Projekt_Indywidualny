@@ -2,7 +2,7 @@ import { useContext, useEffect, useState, useRef } from "react";
 import { CartContext } from "../../../context/CartContext";
 import { StyleSheet, Text, TouchableOpacity, Animated } from "react-native";
 
-export default function CartButton() {
+export default function CartButton(props) {
   const { cartState } = useContext(CartContext);
   const [showButton, setShowButton] = useState(false);
 
@@ -28,14 +28,14 @@ export default function CartButton() {
                   {
                     translateY: animatedValue.interpolate({
                       inputRange: [0, 1],
-                      outputRange: [0, -10] // Podskakiwanie o 10 jednostek w górę
+                      outputRange: [0, -10]
                     })
                   }
                 ] }]}
             >
-              <TouchableOpacity onPress={() => console.log('Pokaż koszyk!')}>
+              <TouchableOpacity onPress={() => props.onPress(true)}>
                 <Text style={styles.cartButtonText}>Pokaż koszyk</Text>
-                <Text style={styles.cartPriceText}>{cartState.totalPrice.toFixed(2)}</Text>
+                <Text style={styles.cartPriceText}>{cartState.totalPrice.toFixed(2)} zł</Text>
               </TouchableOpacity>
             </Animated.View>
           );
