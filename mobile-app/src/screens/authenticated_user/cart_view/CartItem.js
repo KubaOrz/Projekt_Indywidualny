@@ -4,8 +4,13 @@ import { CartContext } from "../../../context/CartContext";
 
 export default function CartItem(props) {
 
-    const {cartState} = useContext(CartContext);
+    const {removeFromCart} = useContext(CartContext);
     const [count, setCount] = useState(props.productCount);
+
+    function remove() {
+        setCount(count - 1);
+        removeFromCart(props.productId);
+    }
 
     return(
         <View style = {styles.container}>
@@ -19,7 +24,7 @@ export default function CartItem(props) {
                 <View style = {styles.productCountView}>
                     <Text>x{count}</Text>
                 </View>
-                <TouchableOpacity style = {styles.productCountView} onPress = {() => console.log('Usuwam produkt %s z koszyka', props.productName)}>
+                <TouchableOpacity style = {styles.productCountView} onPress = {() => remove()}>
                     <Text style = {styles.removeProductButton}>-</Text>
                 </TouchableOpacity>
             </View>

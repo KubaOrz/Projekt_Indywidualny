@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
 import { CartContext } from '../../../context/CartContext';
 import CartItem from './CartItem';
@@ -17,6 +17,12 @@ export default function CartView(props) {
             productCount = {item.count}
             />
       );
+
+    useEffect(() => {
+        if (cartState.products.length === 0) {
+            props.onClose(false);
+        }
+    }, [cartState.products])
 
     return (
         <Modal animationType = "fade" transparent = {true}>
