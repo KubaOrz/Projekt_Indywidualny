@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/glovo
     username: root
-    password: L9zqLbRt
+    password: B9olP6_&
     driver-class-name: com.mysql.cj.jdbc.Driver
   security:
     user:

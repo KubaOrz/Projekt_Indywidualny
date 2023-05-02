@@ -52,10 +52,6 @@ export default function Controller() {
     loadToken();
   }, [loadToken]);
 
-  useEffect(() => {
-    console.log(authContext.authState.authenticated);
-  })
-
   if (authContext.authState.authenticated === 'ROLE_USER') {
     return (
       <NavigationContainer>

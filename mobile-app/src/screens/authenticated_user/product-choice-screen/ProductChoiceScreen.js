@@ -7,6 +7,7 @@ import ProductBar from "./ProductBar";
 import ProductSearchBar from "./ProductSearchBar";
 import LoadingSpinner from "../../../universal-components/LoadingSpinner";
 import FailureAlert from "../../../alerts/FailureAlert";
+import CartButton from "../cart_view/CartButton";
 
 export default function ProductChoiceScreen({navigation}) {
 
@@ -40,7 +41,6 @@ export default function ProductChoiceScreen({navigation}) {
 
     async function loadProducts(path) {
         const [data, error] = await getWithRefresh(path);
-        console.log(error);
         if (!error) {
             const newDisplayedProducts = displayedProducts.concat(data.content);
             setDisplayedProducts(newDisplayedProducts);
@@ -76,7 +76,6 @@ export default function ProductChoiceScreen({navigation}) {
     function loadMoreProducts() {
         if (!isLast.current) {
             loadProducts(url.current + '?page=' + (page.current + 1));
-            console.log(url.current + '?page=' + (page.current + 1));
         }
     }
 
@@ -123,6 +122,7 @@ export default function ProductChoiceScreen({navigation}) {
             />   
             || <LoadingSpinner/>
             }
+            <CartButton />
             {showError && 
                 <FailureAlert title = {'Błąd!'} message = {'Wystapił błąd przy połączeniu z serwerem!'} onClose={() => navigation.goBack()}/>
             }
