@@ -1,10 +1,13 @@
 import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { CartContext } from "../../../context/CartContext";
 
 export default function ProductBar(props) {
 
     const [count, setCount] = useState(0);
     const [isPressed, setPressed] = useState(false);
+
+    const {addToCart} = useContext(CartContext);
 
     function decCount() {
         if (count === 1) {
@@ -15,9 +18,15 @@ export default function ProductBar(props) {
         setCount(count - 1);
     }
 
-    function addToCart() {
+    function beginAddToCart() {
         setCount(1);
         setPressed(true);
+    }
+
+    function confirmAddToCart(product, count) {
+        setPressed(false);
+        setCount(0);
+        addToCart(product, count);
     }
 
     return(
@@ -29,7 +38,7 @@ export default function ProductBar(props) {
                     <Text style = {styles.productNameText}>{props.productName}</Text>
                     <Text style = {styles.productPriceText}>{props.productPrice}</Text>
                 </View>
-                <TouchableOpacity style = {styles.addToCartView} onPress = {() => addToCart()}>
+                <TouchableOpacity style = {styles.addToCartView} onPress = {() => beginAddToCart()}>
                     <Image source = {require('../../../../assets/cart.png')} style = {{height: '80%', aspectRatio: 1}}/>
                 </TouchableOpacity>
             </View>
@@ -41,7 +50,7 @@ export default function ProductBar(props) {
                     </TouchableOpacity>
                 </View>
                 <View style = {styles.choiceBarSection}>
-                    <TouchableOpacity style = {styles.addToCartButton}>
+                    <TouchableOpacity style = {styles.addToCartButton} onPress = {() => confirmAddToCart(props, count)}>
                         <Text style = {styles.addToCartText}>Dodaj: {count}</Text>
                     </TouchableOpacity>
                 </View>

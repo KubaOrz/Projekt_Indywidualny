@@ -9,8 +9,13 @@ function CartProvider({children}) {
         totalPrice: 0
     });
 
-    function addToCart(product) {
-
+    function addToCart(product, count) {
+        updatedProducts = [...cartState.products, {product, count}];
+        updatedTotalPrice = cartState.totalPrice + product.productPrice * count;
+        setCartState({
+            products: updatedProducts,
+            totalPrice: updatedTotalPrice
+        });
     }
 
     function removeFromCart(product) {
