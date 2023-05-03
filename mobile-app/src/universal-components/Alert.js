@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function FailureAlert({ title, message, onClose }) {
+export default function Alert({ title, message, onClose }) {
   return (
     <Modal animationType="fade" transparent={true}>
       <View style={styles.overlay}>

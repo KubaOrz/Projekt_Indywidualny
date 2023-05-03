@@ -1,9 +1,9 @@
-package pl.edu.pw.ee.individualproject.products;
+package pl.edu.pw.ee.individualproject.products.category;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.edu.pw.ee.individualproject.products.Category;
-import pl.edu.pw.ee.individualproject.products.CategoryRepository;
+import pl.edu.pw.ee.individualproject.products.category.Category;
+import pl.edu.pw.ee.individualproject.products.category.CategoryRepository;
 
 import java.util.List;
 

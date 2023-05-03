@@ -1,11 +1,16 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+    background: {
+        backgroundColor: '#8232B9',
+        flex: 1
+    },
+
     container: {
         padding: 20,
         width: '100%',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
 
     defaultButton: {
@@ -26,7 +31,8 @@ export default StyleSheet.create({
         borderColor: 'white',
         width: '80%',
         padding: 5,
-        marginBottom: 8
+        marginBottom: 8,
+        color: 'white'
     },
 
     defaultText: {
