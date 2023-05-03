@@ -5,7 +5,7 @@ import { useContext, useState, useRef } from 'react';
 import DefaultStyles from '../../styles/DefaultStyles';
 import Tile from '../../universal-components/Tile';
 import { AxiosContext } from '../../context/AxiosContext';
-import FailureAlert from '../../alerts/FailureAlert';
+import Alert from '../../universal-components/Alert';
 
 
 export default function UserMainScreen({navigation}) {
@@ -71,7 +71,7 @@ export default function UserMainScreen({navigation}) {
             </TouchableOpacity>
 
             {showSubmitAlert && 
-                <FailureAlert title = {alertTitle.current} message = {alertMessage.current} onClose={() => setShowSubmitAlert(false)}/>
+                <Alert title = {alertTitle.current} message = {alertMessage.current} onClose={() => setShowSubmitAlert(false)}/>
             }
         </View>
     )

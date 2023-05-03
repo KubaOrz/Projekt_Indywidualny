@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import FormStyles from '../../../styles/FormStyles';
 import Alert from '../../../universal-components/Alert';
+import { AuthContext } from '../../../context/AuthContext';
+import { CartContext } from '../../../context/CartContext';
+import { AxiosContext } from '../../../context/AxiosContext';
 
 export default function OrderForm() {
+
+    const {authState} = useContext(AuthContext);
+    const {cartState} = useContext(CartContext);
+    const {authAxios} = useContext(AxiosContext);
 
     const [city, setCity] = useState('');
     const [streetAddress, setStreetAddress] = useState('');
@@ -15,14 +22,44 @@ export default function OrderForm() {
     const [showErrorBox, setShowErrorBox] = useState(false);
     const [showSuccessBox, setShowSuccessBox] = useState(false);
 
-    const handleSubmit = () => {
+    async function createOrder() {
         if (city && streetAddress && houseNumber) {
-            console.log('Address:', streetAddress);
-            console.log('City:', city);
-            console.log('Postcode:', postcode);
+            orderRequest = {
+                purchaserEmail: authState.userDetails.email,
+                address: createAddress(),
+                productList: createProductListDTO()
+            }
+
+            await authAxios.post('/orders', orderRequest
+              ).then(response => {
+                setShowSuccessBox(true);
+              }).error(error => {
+                setShowErrorBox(true);
+              })
         } else {
-            setError('Wypełnij wszystkie pola!');
+            setError('Pola miasto, ulica i numer domu są obowiązkowe!');
         }
+    };
+
+    function createAddress() {
+        let address = streetAddress + ' ' + houseNumber;
+        if (apartmentNumber) {
+            address += '/' + apartmentNumber;
+        }
+        if (postcode) {
+            address += ' ' + postcode;
+        }
+        address += ' ' + city;
+        return address;
+    };
+
+    function createProductListDTO() {
+        let products = [...cartState.products];
+        products = products.map(item => ({
+            productId: item.product.productId,
+            count: item.count
+        }));
+        return products;
     };
 
     return (
@@ -69,11 +106,17 @@ export default function OrderForm() {
 
                 <TouchableOpacity
                     style={FormStyles.defaultButton}
-                    onPress={handleSubmit}
+                    onPress={() => createOrder()}
                 >
                     <Text style={FormStyles.defaultText}>Zamów</Text>
                 </TouchableOpacity>
             </View>
+            {showSuccessBox && 
+                <Alert title = {'Zamówienie dodane!'} message = {"Pomyślnie dodano zamówienie"} onClose={() => setShowSuccessBox(false)}/>
+            }
+            {showErrorBox && 
+                <Alert title = {'Błąd!'} message = {"Nie udało się dodać zamówienia!"} onClose={() => setShowErrorBox(false)}/>
+            }
         </View>
     );
 };
