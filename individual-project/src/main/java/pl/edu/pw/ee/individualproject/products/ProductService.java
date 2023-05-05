@@ -32,11 +32,7 @@ public class ProductService {
     }
 
     public Page<Product> getProductsByName(String name, Pageable pageable) {
-        Page<Product> products = productRepository.findByNameContaining(name, pageable);
-        if (products.isEmpty()) {
-            throw new EntityNotFoundException();
-        }
-        return products;
+        return productRepository.findByNameContaining(name, pageable);
     }
 
     public void addProduct(Product product) {

@@ -5,8 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pl.edu.pw.ee.individualproject.order.DTO.BasicOrderData;
 import pl.edu.pw.ee.individualproject.order.DTO.OrderItemDTO;
 import pl.edu.pw.ee.individualproject.order.DTO.OrderRequest;
+import pl.edu.pw.ee.individualproject.products.Product;
 import pl.edu.pw.ee.individualproject.products.ProductService;
 
 import java.time.LocalDate;
@@ -38,20 +40,37 @@ public class OrderService {
         newOrder = orderRepository.save(newOrder);
 
         List<OrderItem> shoppingList = new ArrayList<>();
+        double totalPrice = 0;
 
         for (OrderItemDTO item: request.getProductList()) {
+            Product product = productService.getProductById(item.productId());
             OrderItem orderItem = new OrderItem(
-                    productService.getProductById(item.productId()),
+                    product,
                     item.count(),
                     newOrder.getId()
             );
+            totalPrice += product.getPrice() * item.count();
 
             orderItemRepository.save(orderItem);
             shoppingList.add(orderItem);
         }
 
         newOrder.setShoppingList(shoppingList);
+        newOrder.setTotalPrice(totalPrice);
 
         return orderRepository.save(newOrder);
+    }
+
+    public List<BasicOrderData> getUserActiveOrders(String email) {
+        return orderRepository.findAllUserActiveOrders(email)
+                .stream()
+                .map(order -> new BasicOrderData(
+                        order.getId(),
+                        order.getPurchaserEmail(),
+                        order.getOrderDate(),
+                        order.getAddress(),
+                        order.getStatus(),
+                        order.getTotalPrice()
+                )).toList();
     }
 }

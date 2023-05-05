@@ -39,6 +39,8 @@ public class Order {
     @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> shoppingList;
 
+    private double totalPrice;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 }
