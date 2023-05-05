@@ -10,7 +10,7 @@ import { StackActions } from '@react-navigation/native';
 export default function OrderForm({navigation}) {
 
     const {authState} = useContext(AuthContext);
-    const {cartState} = useContext(CartContext);
+    const {cartState, clearCart} = useContext(CartContext);
     const {authAxios} = useContext(AxiosContext);
 
     const [city, setCity] = useState('');
@@ -34,6 +34,7 @@ export default function OrderForm({navigation}) {
             authAxios.post('/purchaser/orders', orderRequest
               ).then(() => {
                 setShowSuccessBox(true);
+                clearCart();
 
               }).catch(error => {
                 setShowErrorBox(true);
