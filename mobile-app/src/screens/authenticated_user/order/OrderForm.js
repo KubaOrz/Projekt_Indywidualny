@@ -22,7 +22,7 @@ export default function OrderForm() {
     const [showErrorBox, setShowErrorBox] = useState(false);
     const [showSuccessBox, setShowSuccessBox] = useState(false);
 
-    async function createOrder() {
+    function createOrder() {
         if (city && streetAddress && houseNumber) {
             orderRequest = {
                 purchaserEmail: authState.userDetails.email,
@@ -30,12 +30,15 @@ export default function OrderForm() {
                 productList: createProductListDTO()
             }
 
-            await authAxios.post('/orders', orderRequest
+            authAxios.post('/orders', orderRequest
               ).then(response => {
                 setShowSuccessBox(true);
-              }).error(error => {
+                
+              }).catch(error => {
                 setShowErrorBox(true);
-              })
+                console.log(error);
+
+              });
         } else {
             setError('Pola miasto, ulica i numer domu są obowiązkowe!');
         }
@@ -106,7 +109,7 @@ export default function OrderForm() {
 
                 <TouchableOpacity
                     style={FormStyles.defaultButton}
-                    onPress={() => createOrder()}
+                    onPress = {() => createOrder()}
                 >
                     <Text style={FormStyles.defaultText}>Zamów</Text>
                 </TouchableOpacity>
