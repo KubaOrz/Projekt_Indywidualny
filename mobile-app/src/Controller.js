@@ -10,6 +10,7 @@ import UserMainScreen from './screens/authenticated_user/UserMainScreen';
 import SupplierMainScreen from './screens/authenticated_supplier/SupplierMainScreen';
 import { CartProvider } from './context/CartContext';
 import ProductChoiceScreen from './screens/authenticated_user/product-choice-screen/ProductChoiceScreen';
+import OrderForm from './screens/authenticated_user/order/OrderForm';
 
 const AuthenticatedUserStack = createNativeStackNavigator();
 const AuthenticatedSupplierStack = createNativeStackNavigator();
@@ -56,9 +57,11 @@ export default function Controller() {
     return (
       <NavigationContainer>
         <CartProvider>
-          <AuthenticatedUserStack.Navigator screenOptions={{headerShown: false}}>
+          <AuthenticatedUserStack.Navigator 
+            screenOptions = {{headerShown: false}}>
             <AuthenticatedUserStack.Screen name = "Main" component={UserMainScreen} />
             <AuthenticatedUserStack.Screen name = "Shop" component={ProductChoiceScreen} />
+            <AuthenticatedUserStack.Screen name = "OrderForm" component={OrderForm} />
           </AuthenticatedUserStack.Navigator>
         </CartProvider>
       </NavigationContainer>

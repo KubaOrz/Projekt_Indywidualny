@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Pressable, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { AuthContext } from '../../context/AuthContext';
 import { AxiosContext } from '../../context/AxiosContext';
 import { useState, useContext, useRef } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import FormStyles from '../../styles/FormStyles';
-import FailureAlert from '../../alerts/FailureAlert';
+import Alert from '../../universal-components/Alert';
 
 export default function LoginForm(props) {
 
@@ -90,7 +90,7 @@ export default function LoginForm(props) {
                 <Text style = {FormStyles.defaultText}>Zaloguj</Text>
             </TouchableOpacity>
             {showSubmitAlert && 
-                <FailureAlert title = {alertTitle.current} message = {alertMessage.current} onClose={() => setShowSubmitAlert(false)}/>
+                <Alert title = {alertTitle.current} message = {alertMessage.current} onClose={() => setShowSubmitAlert(false)}/>
             }
         </View>
     )

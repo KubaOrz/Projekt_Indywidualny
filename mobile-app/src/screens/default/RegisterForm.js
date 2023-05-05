@@ -3,7 +3,7 @@ import { View, TextInput, Pressable, Text, TouchableOpacity } from 'react-native
 import { AuthContext } from '../../context/AuthContext';
 import { AxiosContext } from '../../context/AxiosContext';
 import FormStyles from '../../styles/FormStyles';
-import FailureAlert from '../../alerts/FailureAlert'
+import Alert from '../../universal-components/Alert';
 import * as SecureStore from 'expo-secure-store';
 
 export default function RegisterForm(props) {
@@ -199,7 +199,7 @@ export default function RegisterForm(props) {
         <Text style = {FormStyles.defaultText}>Zarejestruj</Text>
       </TouchableOpacity>
       {showSubmitAlert && 
-        <FailureAlert title = {alertTitle.current} message = {alertMessage.current} onClose={() => setShowSubmitAlert(false)}/>
+        <Alert title = {alertTitle.current} message = {alertMessage.current} onClose={() => setShowSubmitAlert(false)}/>
       }
     </View>
   );

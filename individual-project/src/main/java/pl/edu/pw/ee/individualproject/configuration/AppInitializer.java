@@ -3,12 +3,12 @@ package pl.edu.pw.ee.individualproject.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import pl.edu.pw.ee.individualproject.products.Category;
+import pl.edu.pw.ee.individualproject.products.category.Category;
 import pl.edu.pw.ee.individualproject.products.Product;
-import pl.edu.pw.ee.individualproject.products.Shop;
-import pl.edu.pw.ee.individualproject.products.CategoryService;
+import pl.edu.pw.ee.individualproject.products.shop.Shop;
+import pl.edu.pw.ee.individualproject.products.category.CategoryService;
 import pl.edu.pw.ee.individualproject.products.ProductService;
-import pl.edu.pw.ee.individualproject.products.ShopService;
+import pl.edu.pw.ee.individualproject.products.shop.ShopService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;

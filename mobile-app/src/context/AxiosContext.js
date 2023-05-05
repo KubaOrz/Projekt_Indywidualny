@@ -12,11 +12,11 @@ const AxiosProvider = ({children}) => {
   const currentToken = useRef(authContext.getAccessToken());
 
   const authAxios = axios.create({
-    baseURL: 'https://7c8d-185-186-16-243.ngrok-free.app',
+    baseURL: 'https://112d-185-186-16-243.ngrok-free.app',
   });
 
   const publicAxios = axios.create({
-    baseURL: 'https://7c8d-185-186-16-243.ngrok-free.app',
+    baseURL: 'https://112d-185-186-16-243.ngrok-free.app',
   });
 
   async function getWithRefresh(url) {

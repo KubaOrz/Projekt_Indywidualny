@@ -24,6 +24,11 @@ export default function CartView(props) {
         }
     }, [cartState.products])
 
+    function openOrderForm() {
+        props.navigation.navigate("OrderForm");
+        props.onClose(false);
+    }
+
     return (
         <Modal animationType = "fade" transparent = {true}>
             <View style = {styles.overlay}>
@@ -41,7 +46,7 @@ export default function CartView(props) {
                     </View>
 
                     <View style = {styles.summaryBox}>
-                        <TouchableOpacity onPress = {() => console.log('Zamawiam!')} style = {[styles.summaryBoxButton, styles.orderButton]}>
+                        <TouchableOpacity onPress = {() => openOrderForm()} style = {[styles.summaryBoxButton, styles.orderButton]}>
                             <Text style = {styles.summaryButtonText}>Zamów za {cartState.totalPrice.toFixed(2)} zł</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress = {() => props.onClose(false)} style = {[styles.summaryBoxButton, styles.returnButton]}>

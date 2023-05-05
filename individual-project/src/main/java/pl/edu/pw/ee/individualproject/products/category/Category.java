@@ -1,4 +1,4 @@
-package pl.edu.pw.ee.individualproject.products;
+package pl.edu.pw.ee.individualproject.products.category;
 
 import jakarta.persistence.*;
 

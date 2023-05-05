@@ -1,12 +1,11 @@
 import { FlatList, StyleSheet, View } from "react-native";
 import React, { useState, useContext, useRef, useEffect } from 'react';
-import { AuthContext } from "../../../context/AuthContext";
 import { AxiosContext } from "../../../context/AxiosContext";
 import CategoryChoiceBox from "./CategoryChoiceBox";
 import ProductBar from "./ProductBar";
 import ProductSearchBar from "./ProductSearchBar";
 import LoadingSpinner from "../../../universal-components/LoadingSpinner";
-import FailureAlert from "../../../alerts/FailureAlert";
+import Alert from "../../../universal-components/Alert";
 import CartButton from "../cart_view/CartButton";
 import CartView from "../cart_view/CartView";
 
@@ -27,8 +26,7 @@ export default function ProductChoiceScreen({navigation}) {
     var page = useRef(null);
     var isLast = useRef(false);
 
-    const authContext = useContext(AuthContext);
-    const {authAxios, getWithRefresh} = useContext(AxiosContext);
+    const {getWithRefresh} = useContext(AxiosContext);
 
     async function loadCategories() {
         const [data, error] = await getWithRefresh('/products/category');
@@ -126,11 +124,11 @@ export default function ProductChoiceScreen({navigation}) {
             }
             <CartButton onPress = {setShowCart}/>
             {showError && 
-                <FailureAlert title = {'Błąd!'} message = {'Wystapił błąd przy połączeniu z serwerem!'} onClose={() => navigation.goBack()}/>
+                <Alert title = {'Błąd!'} message = {'Wystapił błąd przy połączeniu z serwerem!'} onClose={() => navigation.goBack()}/>
             }
 
             {showCart && 
-                <CartView onClose = {setShowCart}/>
+                <CartView onClose = {setShowCart} navigation = {navigation}/>
             }
 
         </View>
