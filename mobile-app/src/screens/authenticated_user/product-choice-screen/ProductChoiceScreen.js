@@ -8,6 +8,7 @@ import LoadingSpinner from "../../../universal-components/LoadingSpinner";
 import Alert from "../../../universal-components/Alert";
 import CartButton from "../cart_view/CartButton";
 import CartView from "../cart_view/CartView";
+import EmptyListInfo from "../../../universal-components/EmptyListInfo";
 
 export default function ProductChoiceScreen({navigation}) {
 
@@ -90,7 +91,7 @@ export default function ProductChoiceScreen({navigation}) {
         if (categoriesStatus === 'ok' && shopsStatus === 'ok') {
             loadProducts(url.current);
         }
-    }, [url.current])
+    }, [url.current]);
 
     const renderItem = ({ item }) => (
         <ProductBar 
@@ -101,6 +102,32 @@ export default function ProductChoiceScreen({navigation}) {
         shopImage = {{ uri: `data:image/png;base64,${shops.find(shop => shop.id === item.shopId).icon}` }} />
       );
 
+    function ListDisplay() {
+        if (productsStatus === 'ok' && shopsStatus === 'ok') {
+            if (displayedProducts.length > 0) {
+                return (
+                    <FlatList
+                        data = {displayedProducts}
+                        renderItem = {renderItem}
+                        keyExtractor={item => item.id.toString()}
+                        style = {{width: '90%'}}
+                        showsVerticalScrollIndicator={false}
+                        onEndReached={loadMoreProducts}
+                        onEndReachedThreshold={0.5}
+                    /> 
+                )
+            } else {
+                return (
+                    <EmptyListInfo text = {'Brak produktów'}/>
+                )
+            }
+        } else {
+            return (
+                <LoadingSpinner/>
+            )
+        }
+    }
+
     return (
         <View style = {styles.container}>
 
@@ -110,18 +137,7 @@ export default function ProductChoiceScreen({navigation}) {
             <CategoryChoiceBox categories = {categories} onPress = {changeUrl}/>
             || <LoadingSpinner/>}
 
-            {productsStatus === 'ok' && shopsStatus === 'ok' &&
-            <FlatList
-                data = {displayedProducts}
-                renderItem = {renderItem}
-                keyExtractor={item => item.id.toString()}
-                style = {{width: '90%'}}
-                showsVerticalScrollIndicator={false}
-                onEndReached={loadMoreProducts}
-                onEndReachedThreshold={0.5}
-            />   
-            || <LoadingSpinner/>
-            }
+            <ListDisplay/>
             <CartButton onPress = {setShowCart}/>
             {showError && 
                 <Alert title = {'Błąd!'} message = {'Wystapił błąd przy połączeniu z serwerem!'} onClose={() => navigation.goBack()}/>

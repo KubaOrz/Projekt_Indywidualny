@@ -30,10 +30,10 @@ export default function OrderForm() {
                 productList: createProductListDTO()
             }
 
-            authAxios.post('/orders', orderRequest
-              ).then(response => {
+            authAxios.post('/purchaser/orders', orderRequest
+              ).then(() => {
                 setShowSuccessBox(true);
-                
+
               }).catch(error => {
                 setShowErrorBox(true);
                 console.log(error);

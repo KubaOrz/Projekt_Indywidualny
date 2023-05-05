@@ -48,7 +48,7 @@ export default function UserMainScreen({navigation}) {
                     label = {'Zakupy'} />
                     
                     <Tile
-                    onPress = {test} 
+                    onPress = {() => {navigation.navigate('ActiveOrders')}} 
                     backgroundImage = {require('../../../assets/shopping-online.png')} 
                     label = {'Moje zamówienia'} />
                 </View>
