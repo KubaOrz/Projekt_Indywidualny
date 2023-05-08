@@ -34,8 +34,13 @@ public class PurchaserOrderController {
         return new ResponseEntity<>(orderService.createOrder(request), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/user-orders/{email}")
     public ResponseEntity<List<BasicOrderData>> getUserActiveOrders(@PathVariable String email) {
         return ResponseEntity.ok(orderService.getUserActiveOrders(email));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
+        return ResponseEntity.ok(orderService.getOrderById(id));
     }
 }

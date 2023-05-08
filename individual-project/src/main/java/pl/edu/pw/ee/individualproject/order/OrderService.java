@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pl.edu.pw.ee.individualproject.exception.EntityNotFoundException;
 import pl.edu.pw.ee.individualproject.order.DTO.BasicOrderData;
 import pl.edu.pw.ee.individualproject.order.DTO.OrderItemDTO;
 import pl.edu.pw.ee.individualproject.order.DTO.OrderRequest;
@@ -72,5 +73,11 @@ public class OrderService {
                         order.getStatus(),
                         order.getTotalPrice()
                 )).toList();
+    }
+
+    public Order getOrderById(Long id) {
+        return orderRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Nie znaleiono zamówienia o id " + id)
+        );
     }
 }
