@@ -5,11 +5,12 @@ import Alert from '../../../universal-components/Alert';
 import { AuthContext } from '../../../context/AuthContext';
 import { CartContext } from '../../../context/CartContext';
 import { AxiosContext } from '../../../context/AxiosContext';
+import { StackActions } from '@react-navigation/native';
 
-export default function OrderForm() {
+export default function OrderForm({navigation}) {
 
     const {authState} = useContext(AuthContext);
-    const {cartState} = useContext(CartContext);
+    const {cartState, clearCart} = useContext(CartContext);
     const {authAxios} = useContext(AxiosContext);
 
     const [city, setCity] = useState('');
@@ -33,6 +34,7 @@ export default function OrderForm() {
             authAxios.post('/purchaser/orders', orderRequest
               ).then(() => {
                 setShowSuccessBox(true);
+                clearCart();
 
               }).catch(error => {
                 setShowErrorBox(true);
@@ -64,6 +66,12 @@ export default function OrderForm() {
         }));
         return products;
     };
+
+    function confirmSuccess() {
+        setShowSuccessBox(false)
+        navigation.dispatch(StackActions.popToTop());
+        navigation.navigate('ActiveOrders');
+    }
 
     return (
         <View style = {FormStyles.background}>
@@ -115,7 +123,7 @@ export default function OrderForm() {
                 </TouchableOpacity>
             </View>
             {showSuccessBox && 
-                <Alert title = {'Zamówienie dodane!'} message = {"Pomyślnie dodano zamówienie"} onClose={() => setShowSuccessBox(false)}/>
+                <Alert title = {'Zamówienie dodane!'} message = {"Pomyślnie dodano zamówienie"} onClose={() => confirmSuccess()}/>
             }
             {showErrorBox && 
                 <Alert title = {'Błąd!'} message = {"Nie udało się dodać zamówienia!"} onClose={() => setShowErrorBox(false)}/>

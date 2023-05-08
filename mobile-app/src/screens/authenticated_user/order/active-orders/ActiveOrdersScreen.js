@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Modal, StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import OrderListItem from './OrderListItem';
-import { AxiosContext } from '../../../context/AxiosContext';
-import { AuthContext } from '../../../context/AuthContext';
-import LoadingSpinner from '../../../universal-components/LoadingSpinner';
-import EmptyListInfo from '../../../universal-components/EmptyListInfo';
-import Alert from '../../../universal-components/Alert';
+import { AxiosContext } from '../../../../context/AxiosContext';
+import { AuthContext } from '../../../../context/AuthContext';
+import LoadingSpinner from '../../../../universal-components/LoadingSpinner';
+import EmptyListInfo from '../../../../universal-components/EmptyListInfo';
+import Alert from '../../../../universal-components/Alert';
 
-export default function ActiveOrderScreen() {
+export default function ActiveOrderScreen({navigation}) {
 
     const [activeOrders, setActiveOrders] = useState([]);
     const [status, setStatus] = useState('loading');
@@ -18,13 +18,13 @@ export default function ActiveOrderScreen() {
     const renderItem = ({ item }) => (
         <OrderListItem
             order = {item}
+            navigation = {navigation}
             />
       );
 
     async function loadOrders() {
         const {email} = getUserDetails();
-        console.log(email);
-        const [data, error] = await getWithRefresh('/purchaser/orders/' + email);
+        const [data, error] = await getWithRefresh('/purchaser/orders/user-orders/' + email);
         if (data) {
             setActiveOrders(data);
             setStatus('ok');

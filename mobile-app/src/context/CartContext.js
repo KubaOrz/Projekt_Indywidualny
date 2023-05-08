@@ -44,11 +44,19 @@ function CartProvider({children}) {
         });
     }
 
+    function clearCart() {
+        setCartState({
+            products: [],
+            totalPrice: 0
+        });
+    }
+
     return (
         <Provider value={{
             cartState,
             addToCart,
-            removeFromCart
+            removeFromCart,
+            clearCart
         }}>
             {children}
         </Provider>

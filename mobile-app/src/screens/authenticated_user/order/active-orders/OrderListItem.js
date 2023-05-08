@@ -2,13 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const OrderListItem = ({ order }) => {
+const OrderListItem = ({ order, navigation }) => {
     const { id, purchaserEmail, orderDate, address, status, totalPrice } = order;
 
     function getStatusIcon() {
         switch (status) {
             case 'ACTIVE':
-                return <Icon name="clipboard-list-outline" size={40} color="#f5ce42" />;
+                return <Icon name="clipboard-list-outline" size={40} color="#ebc323" />;
             case 'IN_PROGRESS':
                 return <Icon name="clipboard-text-clock-outline" size={40} color="green" />;
         }
@@ -24,11 +24,11 @@ const OrderListItem = ({ order }) => {
     }
 
     return (
-        <TouchableOpacity style={styles.container} onPress = {() => console.log("Szczegóły zamówienia")}>
+        <TouchableOpacity style={styles.container} onPress = {() => navigation.navigate('OrderDetails', {id: id})}>
             <View style={styles.iconContainer}>{getStatusIcon()}</View>
             <View style={styles.infoContainer}>
                 <Text style={styles.statusText}>{getStatusText()}</Text>
-                <Text style={styles.detailsText}>Do zapłaty: {totalPrice} zł</Text>
+                <Text style={styles.detailsText}>Do zapłaty: {totalPrice.toFixed(2)} zł</Text>
                 <Text style={styles.detailsText}>{address}</Text>
                 <Text style={styles.detailsText}>{orderDate}</Text>
             </View>
