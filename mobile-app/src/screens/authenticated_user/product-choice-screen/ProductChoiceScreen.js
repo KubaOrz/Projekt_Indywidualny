@@ -81,10 +81,12 @@ export default function ProductChoiceScreen({navigation}) {
     }
 
     function changeUrl(newUrl) {
-        setProductsStatus('loading');
-        setDisplayedProducts([]);
-        url.current = newUrl;
-        page.current = 0;
+        if (newUrl !== url.current) {
+            setProductsStatus('loading');
+            setDisplayedProducts([]);
+            url.current = newUrl;
+            page.current = 0;
+        }
     }
 
     useEffect(() => {
