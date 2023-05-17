@@ -3,6 +3,7 @@ package pl.edu.pw.ee.individualproject.order;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.edu.pw.ee.individualproject.exception.EntityNotFoundException;
@@ -13,6 +14,7 @@ import pl.edu.pw.ee.individualproject.products.Product;
 import pl.edu.pw.ee.individualproject.products.ProductService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class OrderService {
 
         Order newOrder = Order.builder()
                 .purchaserEmail(request.getPurchaserEmail())
-                .orderDate(LocalDate.now())
+                .orderDate(LocalDateTime.now())
                 .address(request.getAddress())
                 .status(OrderStatus.ACTIVE)
                 .build();
@@ -69,6 +71,8 @@ public class OrderService {
                         order.getId(),
                         order.getPurchaserEmail(),
                         order.getOrderDate(),
+                        order.getDeliveryDate(),
+                        order.getPickUpDate(),
                         order.getAddress(),
                         order.getStatus(),
                         order.getTotalPrice()
@@ -79,5 +83,24 @@ public class OrderService {
         return orderRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Nie znaleiono zamówienia o id " + id)
         );
+    }
+
+    public Page<BasicOrderData> getAllActiveOrders(Pageable pageable) {
+        Page<Order> activeOrders = orderRepository.findAll(pageable);
+
+        List<BasicOrderData> activeOrdersData = activeOrders.getContent().stream()
+                .map(order -> new BasicOrderData(
+                        order.getId(),
+                        order.getPurchaserEmail(),
+                        order.getOrderDate(),
+                        order.getDeliveryDate(),
+                        order.getPickUpDate(),
+                        order.getAddress(),
+                        order.getStatus(),
+                        order.getTotalPrice()
+                ))
+                .toList();
+
+        return new PageImpl<>(activeOrdersData, pageable, activeOrders.getTotalElements());
     }
 }

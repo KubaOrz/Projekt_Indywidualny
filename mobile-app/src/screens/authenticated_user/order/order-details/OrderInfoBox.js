@@ -10,7 +10,7 @@ export default function OrderInfoBox({orderData}) {
                 <Text style = {styles.orderDetailsText}>Zamawiający: {purchaserEmail}</Text>
                 <Text style = {styles.orderDetailsText}>Adres dostawy: {address}</Text>
                 <Text style = {styles.orderDetailsText}>Data zamówienia: {orderDate}</Text>
-                <Text style = {styles.orderDetailsText}>Wartość zamówienia: {totalPrice} zł</Text>
+                <Text style = {styles.orderDetailsText}>Wartość zamówienia: {totalPrice.toFixed(2)} zł</Text>
         </View>
     )
 };

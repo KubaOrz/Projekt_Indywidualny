@@ -2,15 +2,17 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const OrderListItem = ({ order, navigation }) => {
-    const { id, purchaserEmail, orderDate, address, status, totalPrice } = order;
+const OrderListItem = ({ order, navigation, displayType }) => {
+    const { id, purchaserEmail, orderDate, pickUpDate, deliveryDate, address, status, totalPrice } = order;
 
     function getStatusIcon() {
         switch (status) {
             case 'ACTIVE':
-                return <Icon name="clipboard-list-outline" size={40} color="#ebc323" />;
+                return <Icon name="clipboard-list-outline" size={50} color="red" />;
             case 'IN_PROGRESS':
-                return <Icon name="clipboard-text-clock-outline" size={40} color="green" />;
+                return <Icon name="clipboard-text-clock-outline" size={50} color="#ebc323" />;
+            case 'DELIVERED':
+                return <Icon name="home-import-outline" size={50} color="green" />;
         }
     };
 
@@ -19,7 +21,34 @@ const OrderListItem = ({ order, navigation }) => {
             case 'ACTIVE':
                 return 'Niepodjęte';
             case 'IN_PROGRESS':
-                return 'W trakcie realizacji'
+                return 'W trakcie realizacji';
+            case 'DELIVERED':
+                return 'Dostarczone';
+        }
+    }
+
+    function PurchaserEmail() {
+        if (displayType === 'SUPPLIER') {
+            return (
+                <Text style={styles.detailsText}>Zamawiający: {purchaserEmail}</Text>
+            )
+        } else return null;
+    }
+
+    function Date() {
+        switch(status) {
+            case 'ACTIVE':
+                return (
+                    <Text style={styles.detailsText}>Złożono: {orderDate}</Text>
+                )
+            case 'IN_PROGRESS':
+                return (
+                    <Text style={styles.detailsText}>Podjęto: {pickUpDate}</Text>
+                )
+            case 'DELIVERED':
+                return (
+                    <Text style={styles.detailsText}>Dostarczono: {deliveryDate}</Text>
+                )
         }
     }
 
@@ -28,9 +57,10 @@ const OrderListItem = ({ order, navigation }) => {
             <View style={styles.iconContainer}>{getStatusIcon()}</View>
             <View style={styles.infoContainer}>
                 <Text style={styles.statusText}>{getStatusText()}</Text>
+                <PurchaserEmail/>
                 <Text style={styles.detailsText}>Do zapłaty: {totalPrice.toFixed(2)} zł</Text>
                 <Text style={styles.detailsText}>{address}</Text>
-                <Text style={styles.detailsText}>{orderDate}</Text>
+                <Date/>
             </View>
         </TouchableOpacity>
     );

@@ -13,6 +13,7 @@ import ProductChoiceScreen from './screens/authenticated_user/product-choice-scr
 import OrderForm from './screens/authenticated_user/order/OrderForm';
 import ActiveOrderScreen from './screens/authenticated_user/order/active-orders/ActiveOrdersScreen';
 import OrderDetailsScreen from './screens/authenticated_user/order/order-details/OrderDetailsScreen';
+import UntakenOrdersScreen from './screens/authenticated_supplier/order/untaken-orders/UntakenOrdersScreen';
 
 const AuthenticatedUserStack = createNativeStackNavigator();
 const AuthenticatedSupplierStack = createNativeStackNavigator();
@@ -75,6 +76,7 @@ export default function Controller() {
       <NavigationContainer>
         <AuthenticatedSupplierStack.Navigator screenOptions={{headerShown: false}}>
           <AuthenticatedSupplierStack.Screen name = "Main" component={SupplierMainScreen} />
+          <AuthenticatedSupplierStack.Screen name = "UntakenOrders" component={UntakenOrdersScreen} />
         </AuthenticatedSupplierStack.Navigator>
       </NavigationContainer>
     )
