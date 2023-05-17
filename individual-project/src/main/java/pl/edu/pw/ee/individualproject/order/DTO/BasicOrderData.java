@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 public record BasicOrderData(
         Long id,
         String purchaserEmail,
-        LocalDateTime orderDate,
-        LocalDateTime pickUpDate,
-        LocalDateTime deliveryDate,
+        String orderDate,
+        String pickUpDate,
+        String deliveryDate,
         String address,
         OrderStatus status,
         double totalPrice

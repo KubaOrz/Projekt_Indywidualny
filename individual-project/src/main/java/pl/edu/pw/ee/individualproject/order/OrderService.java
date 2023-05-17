@@ -15,6 +15,7 @@ import pl.edu.pw.ee.individualproject.products.ProductService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,16 +68,7 @@ public class OrderService {
     public List<BasicOrderData> getUserActiveOrders(String email) {
         return orderRepository.findAllUserActiveOrders(email)
                 .stream()
-                .map(order -> new BasicOrderData(
-                        order.getId(),
-                        order.getPurchaserEmail(),
-                        order.getOrderDate(),
-                        order.getDeliveryDate(),
-                        order.getPickUpDate(),
-                        order.getAddress(),
-                        order.getStatus(),
-                        order.getTotalPrice()
-                )).toList();
+                .map(order -> extractBasicOrderData(order)).toList();
     }
 
     public Order getOrderById(Long id) {
@@ -89,18 +81,31 @@ public class OrderService {
         Page<Order> activeOrders = orderRepository.findAll(pageable);
 
         List<BasicOrderData> activeOrdersData = activeOrders.getContent().stream()
-                .map(order -> new BasicOrderData(
-                        order.getId(),
-                        order.getPurchaserEmail(),
-                        order.getOrderDate(),
-                        order.getDeliveryDate(),
-                        order.getPickUpDate(),
-                        order.getAddress(),
-                        order.getStatus(),
-                        order.getTotalPrice()
-                ))
+                .map(order -> extractBasicOrderData(order))
                 .toList();
 
         return new PageImpl<>(activeOrdersData, pageable, activeOrders.getTotalElements());
+    }
+
+    private String formatDate(LocalDateTime date) {
+        if (date == null) {
+            return null;
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedDate = date.format(formatter);
+        return date.format(formatter);
+    }
+
+    private BasicOrderData extractBasicOrderData(Order order) {
+        return new BasicOrderData(
+                order.getId(),
+                order.getPurchaserEmail(),
+                formatDate(order.getOrderDate()),
+                formatDate(order.getDeliveryDate()),
+                formatDate(order.getPickUpDate()),
+                order.getAddress(),
+                order.getStatus(),
+                order.getTotalPrice()
+        );
     }
 }
