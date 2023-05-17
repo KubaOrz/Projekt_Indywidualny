@@ -7,6 +7,7 @@ import org.springframework.lang.NonNull;
 import pl.edu.pw.ee.individualproject.user.BasicUserData;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -31,7 +32,11 @@ public class Order {
     private BasicUserData supplier;
 
     @NonNull
-    private LocalDate orderDate;
+    private LocalDateTime orderDate;
+
+    private LocalDateTime pickUpDate;
+
+    private LocalDateTime deliveryDate;
 
     @NonNull
     private String address;

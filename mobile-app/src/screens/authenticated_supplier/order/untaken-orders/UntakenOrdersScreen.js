@@ -1,25 +1,28 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import React, { useContext, useEffect, useState, useRef } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { AxiosContext } from '../../../../context/AxiosContext';
-import { AuthContext } from '../../../../context/AuthContext';
 import LoadingSpinner from '../../../../universal-components/LoadingSpinner';
 import EmptyListInfo from '../../../../universal-components/EmptyListInfo';
 import Alert from '../../../../universal-components/Alert';
 import OrdersList from '../../../../universal-components/orders-list/OrdersList';
 
-export default function ActiveOrderScreen({navigation}) {
+export default function UntakenOrdersScreen({navigation}) {
 
-    const [activeOrders, setActiveOrders] = useState([]);
+    const [untakenOrders, setUntakenOrders] = useState([]);
     const [status, setStatus] = useState('loading');
+    const url = useRef('/supplier/orders');
+    var page = useRef(null);
+    var isLast = useRef(false);
 
     const {getWithRefresh} = useContext(AxiosContext);
-    const {getUserDetails} = useContext(AuthContext);
 
-    async function loadOrders() {
-        const {email} = getUserDetails();
-        const [data, error] = await getWithRefresh('/purchaser/orders/user-orders/' + email);
-        if (data) {
-            setActiveOrders(data);
+    async function loadOrders(url) {
+        const [data, error] = await getWithRefresh(url);
+        if (!error) {
+            const newUntakenOrders = untakenOrders.concat(data.content);
+            setUntakenOrders(newUntakenOrders);
+            page.current = data.number;
+            isLast.current = data.last;
             setStatus('ok');
         } else {
             console.log(error);
@@ -28,17 +31,24 @@ export default function ActiveOrderScreen({navigation}) {
     }
 
     useEffect(() => {
-        loadOrders();
-    }, [])
+        loadOrders(url.current);
+    }, []);
+
+    function loadMoreOrders() {
+        if (!isLast.current) {
+            loadOrders(url.current + '?page=' + (page.current + 1));
+        }
+    }
 
     function Body() {
         if (status === 'ok') {
-            if (activeOrders.length > 0) {
+            if (untakenOrders.length > 0) {
                 return (
                     <OrdersList
-                        orders = {activeOrders}
+                        orders = {untakenOrders}
                         navigation = {navigation}
-                        displayType = {'USER'}
+                        onEndReached = {loadMoreOrders}
+                        displayType = {'SUPPLIER'}
                     />
                 )
             } else {
@@ -56,7 +66,7 @@ export default function ActiveOrderScreen({navigation}) {
 
     return (
          <View style = {styles.container}>
-            <Text style = {styles.title}>Twoje aktywne zamówienia</Text>
+            <Text style = {styles.title}>Podejmij zamówienie!</Text>
             
             <Body/>
 

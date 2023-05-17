@@ -14,6 +14,7 @@ import pl.edu.pw.ee.individualproject.products.Product;
 import pl.edu.pw.ee.individualproject.products.ProductService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class OrderService {
 
         Order newOrder = Order.builder()
                 .purchaserEmail(request.getPurchaserEmail())
-                .orderDate(LocalDate.now())
+                .orderDate(LocalDateTime.now())
                 .address(request.getAddress())
                 .status(OrderStatus.ACTIVE)
                 .build();
@@ -70,6 +71,8 @@ public class OrderService {
                         order.getId(),
                         order.getPurchaserEmail(),
                         order.getOrderDate(),
+                        order.getDeliveryDate(),
+                        order.getPickUpDate(),
                         order.getAddress(),
                         order.getStatus(),
                         order.getTotalPrice()
@@ -90,6 +93,8 @@ public class OrderService {
                         order.getId(),
                         order.getPurchaserEmail(),
                         order.getOrderDate(),
+                        order.getDeliveryDate(),
+                        order.getPickUpDate(),
                         order.getAddress(),
                         order.getStatus(),
                         order.getTotalPrice()

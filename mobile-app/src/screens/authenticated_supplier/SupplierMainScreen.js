@@ -43,7 +43,7 @@ export default function SupplierMainScreen({navigation}) {
             <View style = {DefaultStyles.tileContainer}>
                 <View style = {DefaultStyles.tileRow}>
                     <Tile
-                    onPress = {test} 
+                    onPress = {() => navigation.navigate('UntakenOrders')} 
                     backgroundImage = {require('../../../assets/ecommerce.png')} 
                     label = {'Szukaj zamówień'} />
                     
