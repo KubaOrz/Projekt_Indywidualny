@@ -11,6 +11,7 @@ export default StyleSheet.create({
         width: '80%',
         borderColor: 'white',
         borderWidth: 2,
+        marginBottom: 20
     },
 
     tileRow: {

@@ -53,7 +53,7 @@ const OrderListItem = ({ order, navigation, displayType }) => {
     }
 
     return (
-        <TouchableOpacity style={styles.container} onPress = {() => navigation.navigate('OrderDetails', {id: id})}>
+        <TouchableOpacity style={styles.container} onPress = {() => navigation.navigate('OrderDetails', {id: id, displayType: displayType})}>
             <View style={styles.iconContainer}>{getStatusIcon()}</View>
             <View style={styles.infoContainer}>
                 <Text style={styles.statusText}>{getStatusText()}</Text>
