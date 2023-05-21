@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ee.individualproject.order.DTO.BasicOrderData;
+import pl.edu.pw.ee.individualproject.order.DTO.OrderStartRequest;
 
 @RestController
 @RequestMapping("/supplier/orders")
@@ -38,5 +39,11 @@ public class SupplierOrderController {
     @GetMapping("/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
         return ResponseEntity.ok(orderService.getOrderById(id));
+    }
+
+    @PutMapping
+    public ResponseEntity startOrder(@RequestBody OrderStartRequest orderStartRequest) {
+        orderService.startOrder(orderStartRequest);
+        return ResponseEntity.ok().build();
     }
 }

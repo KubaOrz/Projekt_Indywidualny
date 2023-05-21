@@ -1,32 +1,31 @@
 package pl.edu.pw.ee.individualproject.configuration;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import pl.edu.pw.ee.individualproject.auth.AuthenticationService;
+import pl.edu.pw.ee.individualproject.auth.RegisterRequest;
 import pl.edu.pw.ee.individualproject.products.category.Category;
 import pl.edu.pw.ee.individualproject.products.Product;
 import pl.edu.pw.ee.individualproject.products.shop.Shop;
 import pl.edu.pw.ee.individualproject.products.category.CategoryService;
 import pl.edu.pw.ee.individualproject.products.ProductService;
 import pl.edu.pw.ee.individualproject.products.shop.ShopService;
+import pl.edu.pw.ee.individualproject.user.Role;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 
 @Component
+@RequiredArgsConstructor
 public class AppInitializer implements CommandLineRunner {
 
     private final ProductService productService;
     private final CategoryService categoryService;
     private final ShopService shopService;
-
-    @Autowired
-    public AppInitializer(ProductService productService, CategoryService categoryService, ShopService shopService) {
-        this.productService = productService;
-        this.categoryService = categoryService;
-        this.shopService = shopService;
-    }
+    private final AuthenticationService authenticationService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -82,5 +81,23 @@ public class AppInitializer implements CommandLineRunner {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        authenticationService.register(new RegisterRequest(
+                "Jakub",
+                "Orzełowski",
+                "orz.kuba@wp.pl",
+                "1234",
+                "123456789",
+                Role.ROLE_USER
+        ));
+
+        authenticationService.register(new RegisterRequest(
+                "Jakub",
+                "Orzełowski",
+                "orz.kub@wp.pl",
+                "1234",
+                "123456789",
+                Role.ROLE_SUPPLIER
+        ));
     }
 }

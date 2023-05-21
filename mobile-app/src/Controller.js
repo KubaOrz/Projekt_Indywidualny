@@ -13,7 +13,8 @@ import ProductChoiceScreen from './screens/authenticated_user/product-choice-scr
 import OrderForm from './screens/authenticated_user/order/OrderForm';
 import ActiveOrderScreen from './screens/authenticated_user/order/active-orders/ActiveOrdersScreen';
 import UntakenOrdersScreen from './screens/authenticated_supplier/order/untaken-orders/UntakenOrdersScreen';
-import OrderDetailsScreen from './universal-components/order-details/OrderDetailsScreen';
+import SupplierOrderDetailsScreen from './screens/authenticated_supplier/order/order-details/SupplierOrderDetailsScreen';
+import UserOrderDetailsScreen from './screens/authenticated_user/order/order-details/UserOrderDetailsScreen';
 
 const AuthenticatedUserStack = createNativeStackNavigator();
 const AuthenticatedSupplierStack = createNativeStackNavigator();
@@ -66,7 +67,7 @@ export default function Controller() {
             <AuthenticatedUserStack.Screen name = "Shop" component={ProductChoiceScreen} />
             <AuthenticatedUserStack.Screen name = "OrderForm" component={OrderForm} />
             <AuthenticatedUserStack.Screen name = "ActiveOrders" component={ActiveOrderScreen} />
-            <AuthenticatedUserStack.Screen name = "OrderDetails" component={OrderDetailsScreen} />
+            <AuthenticatedUserStack.Screen name = "OrderDetails" component={UserOrderDetailsScreen} />
           </AuthenticatedUserStack.Navigator>
         </CartProvider>
       </NavigationContainer>
@@ -77,7 +78,7 @@ export default function Controller() {
         <AuthenticatedSupplierStack.Navigator screenOptions={{headerShown: false}}>
           <AuthenticatedSupplierStack.Screen name = "Main" component={SupplierMainScreen} />
           <AuthenticatedSupplierStack.Screen name = "UntakenOrders" component={UntakenOrdersScreen} />
-          <AuthenticatedSupplierStack.Screen name = "OrderDetails" component={OrderDetailsScreen} />
+          <AuthenticatedSupplierStack.Screen name = "OrderDetails" component={SupplierOrderDetailsScreen} />
         </AuthenticatedSupplierStack.Navigator>
       </NavigationContainer>
     )

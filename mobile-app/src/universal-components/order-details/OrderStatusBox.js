@@ -34,19 +34,23 @@ export default function OrderStatusBox(props) {
             </View>
         )
     } else if (status === 'IN_PROGRESS') {
-        <View style = {[styles.statusContainer, {backgroundColor: '#ebc323'}]}>
-            <Text style = {styles.statusText}>Zamówienie jest w trakcie realizacji!</Text>
-            <Animated.View style={{ transform: [{ scale: scaleAnim }], marginBottom: 20 }}>
-               <Icon name="truck-delivery" size={50} color="white" />
-            </Animated.View>
-        </View>
+        return (
+            <View style = {[styles.statusContainer, {backgroundColor: '#ebc323'}]}>
+                <Text style = {styles.statusText}>Zamówienie jest w trakcie realizacji!</Text>
+                <Animated.View style={{ transform: [{ scale: scaleAnim }], marginBottom: 20 }}>
+                    <Icon name="truck-delivery" size={50} color="white" />
+                </Animated.View>
+            </View>
+        )
     } else {
-        <View style = {[styles.statusContainer, {backgroundColor: 'green'}]}>
-            <Text style = {styles.statusText}>Zamówienie zostało dostarczone!</Text>
-            <Animated.View style={{ transform: [{ scale: scaleAnim }], marginBottom: 20 }}>
-               <Icon name="checkbox-marked-outline" size={50} color="white" />
-            </Animated.View>
-        </View>
+        return (
+            <View style = {[styles.statusContainer, {backgroundColor: 'green'}]}>
+                <Text style = {styles.statusText}>Zamówienie zostało dostarczone!</Text>
+                <Animated.View style={{ transform: [{ scale: scaleAnim }], marginBottom: 20 }}>
+                <Icon name="checkbox-marked-outline" size={50} color="white" />
+                </Animated.View>
+            </View>
+        )
     }
 };
 
