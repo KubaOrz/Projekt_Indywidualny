@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { formatLocalDateTime } from '../DateFormatter';
 
 const OrderListItem = ({ order, navigation, displayType }) => {
     const { id, purchaserEmail, orderDate, pickUpDate, deliveryDate, address, status, totalPrice } = order;
@@ -35,19 +36,19 @@ const OrderListItem = ({ order, navigation, displayType }) => {
         } else return null;
     }
 
-    function Date() {
+    function FormattedDate() {
         switch(status) {
             case 'ACTIVE':
                 return (
-                    <Text style={styles.detailsText}>Złożono: {orderDate}</Text>
+                    <Text style={styles.detailsText}>Złożono: {formatLocalDateTime(new Date(orderDate))}</Text>
                 )
             case 'IN_PROGRESS':
                 return (
-                    <Text style={styles.detailsText}>Podjęto: {pickUpDate}</Text>
+                    <Text style={styles.detailsText}>Podjęto: {formatLocalDateTime(new Date(pickUpDate))}</Text>
                 )
             case 'DELIVERED':
                 return (
-                    <Text style={styles.detailsText}>Dostarczono: {deliveryDate}</Text>
+                    <Text style={styles.detailsText}>Dostarczono: {formatLocalDateTime(new Date(deliveryDate))}</Text>
                 )
         }
     }
@@ -60,7 +61,7 @@ const OrderListItem = ({ order, navigation, displayType }) => {
                 <PurchaserEmail/>
                 <Text style={styles.detailsText}>Do zapłaty: {totalPrice.toFixed(2)} zł</Text>
                 <Text style={styles.detailsText}>{address}</Text>
-                <Date/>
+                <FormattedDate/>
             </View>
         </TouchableOpacity>
     );

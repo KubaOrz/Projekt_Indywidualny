@@ -2,12 +2,12 @@ import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
     container: {
-        flex: 1,
         padding: 20,
-        paddingTop: 40,
+        paddingTop: 20,
         backgroundColor: '#8232B9',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        minHeight: '100%'
     },
 
     title: {
@@ -67,5 +67,23 @@ export default StyleSheet.create({
         marginBottom: 8,
         fontWeight: 'bold',
         flex: 1
+    },
+
+    button: {
+        backgroundColor: 'white',
+        borderRadius: 8,
+        flexDirection: 'row',
+        width: '90%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 5,
+        marginBottom: 20
+    },
+
+    buttonText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: 'dark-gray',
+        flex: 4
     }
 });

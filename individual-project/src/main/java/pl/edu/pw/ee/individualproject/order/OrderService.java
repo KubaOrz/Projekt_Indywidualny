@@ -13,7 +13,6 @@ import pl.edu.pw.ee.individualproject.order.DTO.OrderRequest;
 import pl.edu.pw.ee.individualproject.order.DTO.OrderStartRequest;
 import pl.edu.pw.ee.individualproject.products.Product;
 import pl.edu.pw.ee.individualproject.products.ProductService;
-import pl.edu.pw.ee.individualproject.user.UserRepository;
 import pl.edu.pw.ee.individualproject.user.UserService;
 
 import java.time.LocalDateTime;
@@ -90,27 +89,6 @@ public class OrderService {
         return new PageImpl<>(activeOrdersData, pageable, activeOrders.getTotalElements());
     }
 
-    private String formatDate(LocalDateTime date) {
-        if (date == null) {
-            return null;
-        }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return date.format(formatter);
-    }
-
-    private BasicOrderData extractBasicOrderData(Order order) {
-        return new BasicOrderData(
-                order.getId(),
-                order.getPurchaser().getPurchaserEmail(),
-                formatDate(order.getOrderDate()),
-                formatDate(order.getDeliveryDate()),
-                formatDate(order.getPickUpDate()),
-                order.getAddress(),
-                order.getStatus(),
-                order.getTotalPrice()
-        );
-    }
-
     @Transactional
     public void startOrder(OrderStartRequest orderStartRequest) {
         Order order = orderRepository.findById(orderStartRequest.orderId()).orElseThrow(
@@ -123,5 +101,25 @@ public class OrderService {
         order.setPickUpDate(LocalDateTime.now());
 
         orderRepository.save(order);
+    }
+
+    public List<BasicOrderData> getSupplierInProgressOrders(String email) {
+        return orderRepository.findAllSupplierInProgressOrders(email)
+                .stream()
+                .map(order -> extractBasicOrderData(order))
+                .toList();
+    }
+
+    private BasicOrderData extractBasicOrderData(Order order) {
+        return new BasicOrderData(
+                order.getId(),
+                order.getPurchaser().getPurchaserEmail(),
+                order.getOrderDate(),
+                order.getPickUpDate(),
+                order.getDeliveryDate(),
+                order.getAddress(),
+                order.getStatus(),
+                order.getTotalPrice()
+        );
     }
 }

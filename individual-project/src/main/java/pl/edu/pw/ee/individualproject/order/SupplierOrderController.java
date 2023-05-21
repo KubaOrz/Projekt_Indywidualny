@@ -10,24 +10,16 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ee.individualproject.order.DTO.BasicOrderData;
 import pl.edu.pw.ee.individualproject.order.DTO.OrderStartRequest;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/supplier/orders")
+@RequestMapping("/supplier")
 @RequiredArgsConstructor
 public class SupplierOrderController {
 
     private final OrderService orderService;
 
-    // Test
-//    @GetMapping("")
-//    public ResponseEntity<Page<Order>> getAllOrders(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        Page<Order> orders = orderService.getAllOrders(pageable);
-//        return ResponseEntity.ok(orders);
-//    }
-
-    @GetMapping
+    @GetMapping("/orders")
     public ResponseEntity<Page<BasicOrderData>> getAllActiveOrders(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -36,12 +28,17 @@ public class SupplierOrderController {
         return ResponseEntity.ok(activeOrders);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/orders/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
         return ResponseEntity.ok(orderService.getOrderById(id));
     }
 
-    @PutMapping
+    @GetMapping("/{email}/orders")
+    public ResponseEntity<List<BasicOrderData>> getSupplierInProgressOrders(@PathVariable String email) {
+        return ResponseEntity.ok(orderService.getSupplierInProgressOrders(email));
+    }
+
+    @PutMapping("/orders")
     public ResponseEntity startOrder(@RequestBody OrderStartRequest orderStartRequest) {
         orderService.startOrder(orderStartRequest);
         return ResponseEntity.ok().build();

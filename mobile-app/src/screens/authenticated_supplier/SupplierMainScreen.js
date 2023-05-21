@@ -48,7 +48,7 @@ export default function SupplierMainScreen({navigation}) {
                     label = {'Szukaj zamówień'} />
                     
                     <Tile
-                    onPress = {test} 
+                    onPress = {() => navigation.navigate('OrdersInProgress')} 
                     backgroundImage = {require('../../../assets/checklist.png')} 
                     label = {'Moje zamówienia'} />
                 </View>

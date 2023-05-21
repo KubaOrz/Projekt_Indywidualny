@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AxiosContext } from '../../../../context/AxiosContext';
 import LoadingSpinner from '../../../../universal-components/LoadingSpinner';
 import Alert from '../../../../universal-components/Alert';
@@ -9,6 +9,7 @@ import UserOrderInfoBox from './UserOrderInfoBox';
 
 import DefaultStyles from '../../../../styles/DefaultStyles';
 import OrderDetailsStyles from '../../../../styles/OrderDetailsStyles';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function OrderDetailsScreen({navigation, route}) {
 
@@ -59,15 +60,17 @@ export default function OrderDetailsScreen({navigation, route}) {
 
                     <UserOrderInfoBox orderData = {orderData}/>
 
-                    <TouchableOpacity onPress = {() => setShowShoppingList(true)} style = {DefaultStyles.defaultButton}>
-                        <Text style = {DefaultStyles.defaultText}>Pokaż listę zakupów</Text>
+                    <TouchableOpacity onPress = {() => setShowShoppingList(true)} style = {OrderDetailsStyles.button}>
+                        <Icon name="format-list-checks" size={40} color="black" style = {{flex: 1}}/>
+                        <Text style = {OrderDetailsStyles.buttonText}>Pokaż listę zakupów</Text>
                     </TouchableOpacity>
 
                     {orderData.status === 'IN_PROGRESS' && 
 
-                        <TouchableOpacity onPress = {() => console.log('Wyświetlam mapkę')} style = {DefaultStyles.defaultButton}>
-                            <Text style = {DefaultStyles.defaultText}>Pokaż lokalizację dostawcy</Text>
-                        </TouchableOpacity>
+                    <TouchableOpacity onPress = {() => console.log('Wyświetlam mapkę')} style = {OrderDetailsStyles.button}>
+                        <Icon name="map-marker" size={40} color="red" style = {{flex: 1}}/>
+                        <Text style = {OrderDetailsStyles.buttonText}>Pokaż lokalizację dostawcy</Text>
+                    </TouchableOpacity>               
                     }
 
                     {showShoppingList &&
@@ -88,7 +91,7 @@ export default function OrderDetailsScreen({navigation, route}) {
     }
 
     return (
-         <View style = {OrderDetailsStyles.container}>
+         <ScrollView contentContainerStyle = {OrderDetailsStyles.container}>
             <Text style = {OrderDetailsStyles.title}>Zamówienie numer {id}</Text>
             
             <Body/>
@@ -97,6 +100,6 @@ export default function OrderDetailsScreen({navigation, route}) {
                 <Alert title = {'Błąd!'} message = {'Wystapił błąd przy połączeniu z serwerem!'} onClose={() => navigation.goBack()}/>
             }
 
-        </View>
+        </ScrollView>
     );
 };

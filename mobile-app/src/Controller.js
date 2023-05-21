@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
@@ -15,6 +15,7 @@ import ActiveOrderScreen from './screens/authenticated_user/order/active-orders/
 import UntakenOrdersScreen from './screens/authenticated_supplier/order/untaken-orders/UntakenOrdersScreen';
 import SupplierOrderDetailsScreen from './screens/authenticated_supplier/order/order-details/SupplierOrderDetailsScreen';
 import UserOrderDetailsScreen from './screens/authenticated_user/order/order-details/UserOrderDetailsScreen';
+import OrdersInProgressScreen from './screens/authenticated_supplier/order/orders-in-progress/OrdersInProgressScreen';
 
 const AuthenticatedUserStack = createNativeStackNavigator();
 const AuthenticatedSupplierStack = createNativeStackNavigator();
@@ -79,6 +80,7 @@ export default function Controller() {
           <AuthenticatedSupplierStack.Screen name = "Main" component={SupplierMainScreen} />
           <AuthenticatedSupplierStack.Screen name = "UntakenOrders" component={UntakenOrdersScreen} />
           <AuthenticatedSupplierStack.Screen name = "OrderDetails" component={SupplierOrderDetailsScreen} />
+          <AuthenticatedSupplierStack.Screen name = "OrdersInProgress" component={OrdersInProgressScreen} />
         </AuthenticatedSupplierStack.Navigator>
       </NavigationContainer>
     )
