@@ -11,8 +11,11 @@ import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    @Query("SELECT o FROM Order o WHERE o.purchaserEmail = :email AND o.status = 'ACTIVE' OR o.status = 'IN_PROGRESS'")
+    @Query("SELECT o FROM Order o WHERE o.purchaser.purchaserEmail = :email AND o.status = 'ACTIVE' OR o.status = 'IN_PROGRESS'")
     List<Order> findAllUserActiveOrders(@Param("email") String email);
+
+    @Query("SELECT o FROM Order o WHERE o.status = 'ACTIVE'")
+    Page<Order> findAllUntakenOrders(Pageable pageable);
 
     Optional<Order> findById(Long id);
 

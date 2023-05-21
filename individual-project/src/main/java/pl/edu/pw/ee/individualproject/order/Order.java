@@ -1,12 +1,11 @@
 package pl.edu.pw.ee.individualproject.order;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.lang.NonNull;
-import pl.edu.pw.ee.individualproject.user.BasicUserData;
+import pl.edu.pw.ee.individualproject.user.DTO.BasicPurchaserData;
+import pl.edu.pw.ee.individualproject.user.DTO.BasicSupplierData;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,13 +22,14 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "purchaser_email")
+    @Column(name = "purchaser")
     @NonNull
-    private String purchaserEmail;
-
-    @Column(name = "supplier")
     @Embedded
-    private BasicUserData supplier;
+    private BasicPurchaserData purchaser;
+
+    @Embedded
+    @Column(name = "supplier")
+    private BasicSupplierData supplier;
 
     @NonNull
     private LocalDateTime orderDate;

@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { AxiosContext } from '../../context/AxiosContext';
-import LoadingSpinner from '../LoadingSpinner';
-import Alert from '../Alert';
-import DefaultStyles from '../../styles/DefaultStyles';
-import OrderStatusBox from './OrderStatusBox';
-import OrderInfoBox from './OrderInfoBox';
-import ShoppingList from './ShoppingList';
+import { AxiosContext } from '../../../../context/AxiosContext';
+import LoadingSpinner from '../../../../universal-components/LoadingSpinner';
+import Alert from '../../../../universal-components/Alert';
+import OrderStatusBox from '../../../../universal-components/order-details/OrderStatusBox';
+import ShoppingList from '../../../../universal-components/order-details/ShoppingList';
+import UserOrderInfoBox from './UserOrderInfoBox';
+
+import DefaultStyles from '../../../../styles/DefaultStyles';
+import OrderDetailsStyles from '../../../../styles/OrderDetailsStyles';
 
 export default function OrderDetailsScreen({navigation, route}) {
 
@@ -14,8 +16,8 @@ export default function OrderDetailsScreen({navigation, route}) {
     const [status, setStatus] = useState('loading');
     const [shops, setShops] = useState([]);
     const [showShoppingList, setShowShoppingList] = useState(false);
-    const url = useRef(displayType === 'USER' ? '/purchaser/orders/': '/supplier/orders/');
-    const {id, displayType} = route.params;
+    const url = useRef('/purchaser/orders/');
+    const {id} = route.params;
 
     const {getWithRefresh} = useContext(AxiosContext);
 
@@ -44,7 +46,6 @@ export default function OrderDetailsScreen({navigation, route}) {
         async function loadData() {
             await loadShops();
             await loadOrderData(url.current);
-            console.log(orderData.status + " " + displayType);
         }
 
         loadData();
@@ -53,33 +54,19 @@ export default function OrderDetailsScreen({navigation, route}) {
     function Body() {
         if (status === 'ok') {
             return (
-                <View style = {styles.body}>
+                <View style = {OrderDetailsStyles.body}>
                     <OrderStatusBox status = {orderData.status}/>
 
-                    <OrderInfoBox orderData = {orderData}/>
+                    <UserOrderInfoBox orderData = {orderData}/>
 
                     <TouchableOpacity onPress = {() => setShowShoppingList(true)} style = {DefaultStyles.defaultButton}>
                         <Text style = {DefaultStyles.defaultText}>Pokaż listę zakupów</Text>
                     </TouchableOpacity>
 
-                    {displayType === 'USER' && orderData.status === 'IN_PROGRESS' && 
+                    {orderData.status === 'IN_PROGRESS' && 
 
                         <TouchableOpacity onPress = {() => console.log('Wyświetlam mapkę')} style = {DefaultStyles.defaultButton}>
                             <Text style = {DefaultStyles.defaultText}>Pokaż lokalizację dostawcy</Text>
-                        </TouchableOpacity>
-                    }
-
-                    {displayType === 'SUPPLIER' && orderData.status === 'IN_PROGRESS' &&
-
-                        <TouchableOpacity onPress = {() => console.log('Wyświetlam mapkę')} style = {DefaultStyles.defaultButton}>
-                            <Text style = {DefaultStyles.defaultText}>Pokaż trasę</Text>
-                        </TouchableOpacity>
-                    }
-
-                    {displayType === 'SUPPLIER' && orderData.status === 'ACTIVE' &&
-
-                        <TouchableOpacity onPress = {() => console.log('Podejmuję zamówienie')} style = {DefaultStyles.defaultButton}>
-                            <Text style = {DefaultStyles.defaultText}>Podejmij zamówienie</Text>
                         </TouchableOpacity>
                     }
 
@@ -101,8 +88,8 @@ export default function OrderDetailsScreen({navigation, route}) {
     }
 
     return (
-         <View style = {styles.container}>
-            <Text style = {styles.title}>Zamówienie numer {id}</Text>
+         <View style = {OrderDetailsStyles.container}>
+            <Text style = {OrderDetailsStyles.title}>Zamówienie numer {id}</Text>
             
             <Body/>
 
@@ -113,29 +100,3 @@ export default function OrderDetailsScreen({navigation, route}) {
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-        paddingTop: 40,
-        backgroundColor: '#8232B9',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-
-    title: {
-        fontSize: 30,
-        color: 'white',
-        fontWeight: 'bold',
-        marginTop: 20,
-        marginBottom: 20,
-        textAlign: 'center'
-    },
-
-    body: {
-        flex: 1,
-        width: '100%',
-        alignItems: 'center'
-    },
-});
