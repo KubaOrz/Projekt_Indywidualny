@@ -1,21 +1,10 @@
 import { View, Text, StyleSheet } from "react-native"
 import OrderDetailsStyles from "../../../../styles/OrderDetailsStyles";
+import { formatLocalDateTime } from "../../../../universal-components/DateFormatter";
 
 export default function SupplierOrderInfoBox({orderData}) {
 
     const {status, purchaser, address, orderDate, pickUpDate, deliveryDate, totalPrice} = orderData;
-
-    function formatLocalDateTime(dateTime) {
-        const formatter = new Intl.DateTimeFormat('pl', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit'
-        });
-      
-        return formatter.format(dateTime);
-      }
 
     return (
         <View style = {OrderDetailsStyles.orderDetailsContainer}>

@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { AxiosContext } from '../../../../context/AxiosContext';
 import { AuthContext } from '../../../../context/AuthContext';
 import LoadingSpinner from '../../../../universal-components/LoadingSpinner';
 import Alert from '../../../../universal-components/Alert';
-import DefaultStyles from '../../../../styles/DefaultStyles';
+import OrderDetailsStyles from '../../../../styles/OrderDetailsStyles';
 import OrderStatusBox from '../../../../universal-components/order-details/OrderStatusBox';
 import ShoppingList from '../../../../universal-components/order-details/ShoppingList';
 import SupplierOrderInfoBox from './SupplierOrderInfoBox';
 import { StackActions } from '@react-navigation/native';
-import OrderDetailsStyles from '../../../../styles/OrderDetailsStyles';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function SupplierOrderDetailsScreen({navigation, route}) {
 
@@ -79,21 +79,30 @@ export default function SupplierOrderDetailsScreen({navigation, route}) {
 
                     <SupplierOrderInfoBox orderData = {orderData}/>
 
-                    <TouchableOpacity onPress = {() => setShowShoppingList(true)} style = {DefaultStyles.defaultButton}>
-                        <Text style = {DefaultStyles.defaultText}>Pokaż listę zakupów</Text>
+                    <TouchableOpacity onPress = {() => setShowShoppingList(true)} style = {OrderDetailsStyles.button}>
+                        <Icon name="format-list-checks" size={40} color="black" style = {{flex: 1}}/>
+                        <Text style = {OrderDetailsStyles.buttonText}>Pokaż listę zakupów</Text>
                     </TouchableOpacity>
 
                     {orderData.status === 'IN_PROGRESS' &&
+                        <>
+                            <TouchableOpacity onPress = {() => console.log('Wyświetlam mapkę')} style = {OrderDetailsStyles.button}>
+                                <Icon name="map" size={40} color="#ebc323" style = {{flex: 1}}/>
+                                <Text style = {OrderDetailsStyles.buttonText}>Pokaż trasę</Text>
+                            </TouchableOpacity>
 
-                        <TouchableOpacity onPress = {() => console.log('Wyświetlam mapkę')} style = {DefaultStyles.defaultButton}>
-                            <Text style = {DefaultStyles.defaultText}>Pokaż trasę</Text>
-                        </TouchableOpacity>
+                            <TouchableOpacity onPress = {() => console.log('Potwierdź dostarczenie')} style = {OrderDetailsStyles.button}>
+                                <Icon name="checkbox-marked" size={40} color="green" style = {{flex: 1}}/>
+                                <Text style = {OrderDetailsStyles.buttonText}>Potwierdź dostarczenie</Text>
+                            </TouchableOpacity>
+                        </>
                     }
 
                     {orderData.status === 'ACTIVE' &&
 
-                        <TouchableOpacity onPress = {() => startOrder()} style = {DefaultStyles.defaultButton}>
-                            <Text style = {DefaultStyles.defaultText}>Podejmij zamówienie</Text>
+                        <TouchableOpacity onPress = {() => startOrder()} style = {OrderDetailsStyles.button}>
+                            <Icon name="truck-delivery" size={40} color="red" style = {{flex: 1}}/>
+                            <Text style = {OrderDetailsStyles.buttonText}>Podejmij zamówienie</Text>
                         </TouchableOpacity>
                     }
 
@@ -119,7 +128,7 @@ export default function SupplierOrderDetailsScreen({navigation, route}) {
     }
 
     return (
-         <View style = {OrderDetailsStyles.container}>
+         <ScrollView contentContainerStyle = {OrderDetailsStyles.container}>
             <Text style = {OrderDetailsStyles.title}>Zamówienie numer {id}</Text>
             
             <Body/>
@@ -128,6 +137,6 @@ export default function SupplierOrderDetailsScreen({navigation, route}) {
                 <Alert title = {'Błąd!'} message = {'Wystapił błąd przy połączeniu z serwerem!'} onClose={() => navigation.goBack()}/>
             }
 
-        </View>
+        </ScrollView>
     );
 };
