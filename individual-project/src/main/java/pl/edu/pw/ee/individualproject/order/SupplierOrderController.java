@@ -39,8 +39,14 @@ public class SupplierOrderController {
     }
 
     @PutMapping("/orders")
-    public ResponseEntity startOrder(@RequestBody OrderStartRequest orderStartRequest) {
+    @ResponseStatus(HttpStatus.OK)
+    public void startOrder(@RequestBody OrderStartRequest orderStartRequest) {
         orderService.startOrder(orderStartRequest);
-        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/orders/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void finishOrder(@PathVariable Long id) {
+        orderService.finishOrder(id);
     }
 }

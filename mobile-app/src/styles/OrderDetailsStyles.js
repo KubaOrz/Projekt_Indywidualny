@@ -47,7 +47,7 @@ export default StyleSheet.create({
     orderDetailsTitle: {
         fontWeight: 'bold',
         fontSize: 20,
-        color: 'black',
+        color: '#3b3e42',
         backgroundColor: 'white',
         textAlign: 'center',
         marginBottom: 15,
@@ -83,7 +83,7 @@ export default StyleSheet.create({
     buttonText: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: 'dark-gray',
+        color: '#3b3e42',
         flex: 4
     }
 });

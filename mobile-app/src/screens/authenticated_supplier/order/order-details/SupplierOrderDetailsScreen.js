@@ -17,7 +17,8 @@ export default function SupplierOrderDetailsScreen({navigation, route}) {
     const [status, setStatus] = useState('loading');
     const [shops, setShops] = useState([]);
     const [showShoppingList, setShowShoppingList] = useState(false);
-    const [showSuccessBox, setShowSuccessBox] = useState(false);
+    const [showOrderFinishBox, setShowOrderFinishBox] = useState(false);
+    const [showOrderStartBox, setShowOrderStartBox] = useState(false);
     const url = useRef('/supplier/orders/');
     const {id} = route.params;
 
@@ -28,17 +29,24 @@ export default function SupplierOrderDetailsScreen({navigation, route}) {
         authAxios.put('/supplier/orders', {
             orderId: id,
             supplierEmail: getUserDetails().email
-        }).then(response => {
-            setShowSuccessBox(true);
+        }).then(() => {
+            navigation.dispatch(StackActions.popToTop());
+            navigation.navigate('OrderDetails', {id: id});
         }).catch(error => {
             console.log(error);
+            setStatus('error');
         })
     }
 
-    function confirmSuccess() {
-        setShowSuccessBox(false)
-        navigation.dispatch(StackActions.popToTop());
-        navigation.navigate('OrderDetails', {id: id});
+    function finishOrder() {
+        authAxios.put('/supplier/orders/' + id)
+        .then(() => {
+            navigation.dispatch(StackActions.popToTop());
+            navigation.navigate('OrderDetails', {id: id});
+        }).catch(error => {
+            console.log(error);
+            setStatus('error');
+        })
     }
 
     async function loadShops() {
@@ -91,7 +99,7 @@ export default function SupplierOrderDetailsScreen({navigation, route}) {
                                 <Text style = {OrderDetailsStyles.buttonText}>Pokaż trasę</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress = {() => console.log('Potwierdź dostarczenie')} style = {OrderDetailsStyles.button}>
+                            <TouchableOpacity onPress = {() => setShowOrderFinishBox(true)} style = {OrderDetailsStyles.button}>
                                 <Icon name="checkbox-marked" size={40} color="green" style = {{flex: 1}}/>
                                 <Text style = {OrderDetailsStyles.buttonText}>Potwierdź dostarczenie</Text>
                             </TouchableOpacity>
@@ -100,23 +108,11 @@ export default function SupplierOrderDetailsScreen({navigation, route}) {
 
                     {orderData.status === 'ACTIVE' &&
 
-                        <TouchableOpacity onPress = {() => startOrder()} style = {OrderDetailsStyles.button}>
+                        <TouchableOpacity onPress = {() => setShowOrderStartBox(true)} style = {OrderDetailsStyles.button}>
                             <Icon name="truck-delivery" size={40} color="red" style = {{flex: 1}}/>
                             <Text style = {OrderDetailsStyles.buttonText}>Podejmij zamówienie</Text>
                         </TouchableOpacity>
                     }
-
-                    {showShoppingList &&
-                        <ShoppingList 
-                            shoppingList = {orderData.shoppingList}
-                            shops = {shops}
-                            onClose = {setShowShoppingList}
-                        />
-                    }
-
-                    {showSuccessBox && 
-                        <Alert title = {'Zamówienie dodane!'} message = {"Pomyślnie dodano zamówienie"} onClose={() => confirmSuccess()}/>
-                    }  
 
                 </View>
             )   
@@ -135,6 +131,30 @@ export default function SupplierOrderDetailsScreen({navigation, route}) {
 
             {status === 'error' &&
                 <Alert title = {'Błąd!'} message = {'Wystapił błąd przy połączeniu z serwerem!'} onClose={() => navigation.goBack()}/>
+            }
+
+            {showShoppingList &&
+                <ShoppingList 
+                    shoppingList = {orderData.shoppingList}
+                    shops = {shops}
+                    onClose = {setShowShoppingList}
+                />
+            }
+
+            {showOrderStartBox && 
+                <Alert 
+                    title = {'Czy na pewno?'} 
+                    message = {"Czy na pewno chcesz przyjąć to zamówienie?"} 
+                    onClose = {() => startOrder()} 
+                />
+            }
+
+            {showOrderFinishBox && 
+                <Alert 
+                    title = {'Czy na pewno?'} 
+                    message = {"Czy na pewno chcesz potwierdzić dostarczenie zamówienia?"} 
+                    onClose = {() => finishOrder()} 
+                />
             }
 
         </ScrollView>

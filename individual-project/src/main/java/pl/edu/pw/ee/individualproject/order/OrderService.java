@@ -122,4 +122,14 @@ public class OrderService {
                 order.getTotalPrice()
         );
     }
+
+    public void finishOrder(Long id) {
+        Order order = orderRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Nie znaleziono zamówienia o id " + id)
+        );
+
+        order.setStatus(OrderStatus.DELIVERED);
+        order.setDeliveryDate(LocalDateTime.now());
+        orderRepository.save(order);
+    }
 }
