@@ -2,6 +2,46 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2b295c75-77b5-4cb3-b2b6-bb5a1339f561" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../individual-project/src/main/java/pl/edu/pw/ee/individualproject/order/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../individual-project/src/main/java/pl/edu/pw/ee/individualproject/order/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/StackController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/AuthContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/AuthenticationScreens/AuthContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/AxiosContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/AuthenticationScreens/AxiosContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/CartContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cart/CartContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_supplier/SupplierMainScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SupplierMainScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_supplier/order/order-details/SupplierOrderDetailsScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderDetailsScreens/Supplier/SupplierOrderDetailsScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_supplier/order/order-details/SupplierOrderInfoBox.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderDetailsScreens/Supplier/SupplierOrderInfoBox.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_supplier/order/orders-in-progress/OrdersInProgressScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderScreens/Supplier/OrdersInProgressScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_supplier/order/untaken-orders/UntakenOrdersScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderScreens/Supplier/UntakenOrdersScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_user/UserMainScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserMainScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_user/cart_view/CartButton.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cart/CartButton.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_user/cart_view/CartItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cart/CartItem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_user/cart_view/CartView.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cart/CartView.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_user/order/OrderForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderScreens/User/OrderForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_user/order/active-orders/ActiveOrdersScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderScreens/User/ActiveOrdersScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_user/order/order-details/UserOrderDetailsScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderDetailsScreens/User/UserOrderDetailsScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_user/order/order-details/UserOrderInfoBox.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderDetailsScreens/User/UserOrderInfoBox.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_user/product-choice-screen/CategoryChoiceBox.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/ProductsScreens/CategoryChoiceBox.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_user/product-choice-screen/ProductBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/ProductsScreens/ProductBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_user/product-choice-screen/ProductChoiceScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/ProductsScreens/ProductChoiceScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/authenticated_user/product-choice-screen/ProductSearchBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/ProductsScreens/ProductSearchBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/default/DefaultRoot.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/AuthenticationScreens/DefaultRoot.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/default/LoginForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/AuthenticationScreens/LoginForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/default/RegisterForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/AuthenticationScreens/RegisterForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/DefaultStyles.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Styles/DefaultStyles.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/FormStyles.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Styles/FormStyles.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/OrderDetailsStyles.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Styles/OrderDetailsStyles.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/universal-components/Alert.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/UniversalComponents/Alert.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/universal-components/DateFormatter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/UniversalComponents/DateFormatter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/universal-components/EmptyListInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/UniversalComponents/EmptyListInfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/universal-components/LoadingSpinner.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/UniversalComponents/LoadingSpinner.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/universal-components/Tile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/UniversalComponents/Tile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/universal-components/order-details/OrderStatusBox.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderDetailsScreens/OrderStatusBox.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/universal-components/order-details/ShoppingList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderDetailsScreens/ShoppingList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/universal-components/order-details/ShoppingListItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderDetailsScreens/ShoppingListItem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/universal-components/orders-list/OrderListItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderScreens/OrderListItem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/universal-components/orders-list/OrdersList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderScreens/OrdersList.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../projekt_indywidualny.eap" beforeDir="false" afterPath="$PROJECT_DIR$/../projekt_indywidualny.eap" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -11,6 +51,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2Pdp36fU48WGDaePz4apKentmvE" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -23,9 +66,19 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/orzku/OneDrive/Pulpit/Kuba/Studia/Semestr 4/Projekt_Indywidualny/mobile-app"
+    "last_opened_file_path": "C:/Users/orzku/OneDrive/Pulpit/Kuba/Studia/Semestr 4/Projekt_Indywidualny/mobile-app",
+    "nodejs_package_manager_path": "npm"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\orzku\OneDrive\Pulpit\Kuba\Studia\Semestr 4\Projekt_Indywidualny\mobile-app\src" />
+      <recent name="C:\Users\orzku\OneDrive\Pulpit\Kuba\Studia\Semestr 4\Projekt_Indywidualny\mobile-app\src\OrderDetailsScreens" />
+      <recent name="C:\Users\orzku\OneDrive\Pulpit\Kuba\Studia\Semestr 4\Projekt_Indywidualny\mobile-app\src\ProductsScreens" />
+      <recent name="C:\Users\orzku\OneDrive\Pulpit\Kuba\Studia\Semestr 4\Projekt_Indywidualny\mobile-app\src\OrderDetailsScreens\Supplier" />
+      <recent name="C:\Users\orzku\OneDrive\Pulpit\Kuba\Studia\Semestr 4\Projekt_Indywidualny\mobile-app\src\OrderDetailsScreens\User" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -35,6 +88,7 @@
       <option name="presentableId" value="Default" />
       <updated>1683796610650</updated>
       <workItem from="1683796611869" duration="57000" />
+      <workItem from="1685004906179" duration="1972000" />
     </task>
     <servers />
   </component>

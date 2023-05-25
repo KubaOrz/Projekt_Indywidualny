@@ -12,11 +12,10 @@ import pl.edu.pw.ee.individualproject.order.DTO.OrderItemDTO;
 import pl.edu.pw.ee.individualproject.order.DTO.OrderRequest;
 import pl.edu.pw.ee.individualproject.order.DTO.OrderStartRequest;
 import pl.edu.pw.ee.individualproject.products.Product;
-import pl.edu.pw.ee.individualproject.products.ProductService;
+import pl.edu.pw.ee.individualproject.products.ProductRepository;
 import pl.edu.pw.ee.individualproject.user.UserService;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,7 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final ProductService productService;
+    private final ProductRepository productRepository;
     private final OrderItemRepository orderItemRepository;
     private final UserService userService;
 
@@ -49,7 +48,9 @@ public class OrderService {
         double totalPrice = 0;
 
         for (OrderItemDTO item: request.getProductList()) {
-            Product product = productService.getProductById(item.productId());
+            Product product = productRepository.findById(item.productId()).orElseThrow(
+                    () -> new EntityNotFoundException("Nie ma takiego produktu w bazie danych!")
+            );
             OrderItem orderItem = new OrderItem(
                     product,
                     item.count(),
@@ -121,5 +122,15 @@ public class OrderService {
                 order.getStatus(),
                 order.getTotalPrice()
         );
+    }
+
+    public void finishOrder(Long id) {
+        Order order = orderRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Nie znaleziono zamówienia o id " + id)
+        );
+
+        order.setStatus(OrderStatus.DELIVERED);
+        order.setDeliveryDate(LocalDateTime.now());
+        orderRepository.save(order);
     }
 }
