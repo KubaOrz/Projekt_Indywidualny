@@ -55,7 +55,7 @@ export default function UserMainScreen({navigation}) {
                 
                 <View style = {DefaultStyles.tileRow}>
                     <Tile
-                    onPress = {test} 
+                    onPress = {() => {navigation.navigate('OrderHistory')}} 
                     backgroundImage = {require('../assets/clock.png')}
                     label = {'Historia zamówień'} />
                     

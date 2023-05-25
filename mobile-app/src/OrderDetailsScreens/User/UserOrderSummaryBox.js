@@ -56,7 +56,8 @@ export default function SupplierOrderSummaryBox({orderData}) {
             return (
                 <View>
                     <Text style = {OrderDetailsStyles.summaryBoxDefaultText}>Dostawca zajęło 
-                        <Text style = {OrderDetailsStyles.summaryBoxHighlightedText}> {deliveryTime} {deliveryMinuteString}, aby dostarczyć Twoje zamówienie</Text>
+                        <Text style = {OrderDetailsStyles.summaryBoxHighlightedText}> {deliveryTime} {deliveryMinuteString}</Text>
+                        , aby dostarczyć Twoje zamówienie
                     </Text>
                     <Text style = {OrderDetailsStyles.summaryBoxDefaultText}>Łącznie na zamówienie czekałeś 
                         <Text style = {OrderDetailsStyles.summaryBoxHighlightedText}> {totalTime} {totalMinuteString}.</Text>

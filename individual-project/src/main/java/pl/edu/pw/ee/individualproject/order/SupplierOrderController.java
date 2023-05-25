@@ -49,4 +49,14 @@ public class SupplierOrderController {
     public void finishOrder(@PathVariable Long id) {
         orderService.finishOrder(id);
     }
+
+    @GetMapping("/{email}/history")
+    public ResponseEntity<Page<BasicOrderData>> getSupplierDeliveredOrders(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @PathVariable String email) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<BasicOrderData> orders = orderService.getSupplierDeliveredOrders(pageable, email);
+        return ResponseEntity.ok(orders);
+    }
 }

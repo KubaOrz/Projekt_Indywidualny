@@ -16,6 +16,8 @@ import UntakenOrdersScreen from './OrderScreens/Supplier/UntakenOrdersScreen';
 import SupplierOrderDetailsScreen from './OrderDetailsScreens/Supplier/SupplierOrderDetailsScreen';
 import UserOrderDetailsScreen from './OrderDetailsScreens/User/UserOrderDetailsScreen';
 import OrdersInProgressScreen from './OrderScreens/Supplier/OrdersInProgressScreen';
+import UserOrderHistoryScreen from './OrderScreens/User/UserOrderHistoryScreen';
+import SupplierOrderHistoryScreen from './OrderScreens/Supplier/SupplierOrderHistoryScreen';
 
 const AuthenticatedUserStack = createNativeStackNavigator();
 const AuthenticatedSupplierStack = createNativeStackNavigator();
@@ -69,6 +71,7 @@ export default function StackController() {
             <AuthenticatedUserStack.Screen name = "OrderForm" component={OrderForm} />
             <AuthenticatedUserStack.Screen name = "ActiveOrders" component={ActiveOrderScreen} />
             <AuthenticatedUserStack.Screen name = "OrderDetails" component={UserOrderDetailsScreen} />
+            <AuthenticatedUserStack.Screen name = "OrderHistory" component={UserOrderHistoryScreen} />
           </AuthenticatedUserStack.Navigator>
         </CartProvider>
       </NavigationContainer>
@@ -81,6 +84,7 @@ export default function StackController() {
           <AuthenticatedSupplierStack.Screen name = "UntakenOrders" component={UntakenOrdersScreen} />
           <AuthenticatedSupplierStack.Screen name = "OrderDetails" component={SupplierOrderDetailsScreen} />
           <AuthenticatedSupplierStack.Screen name = "OrdersInProgress" component={OrdersInProgressScreen} />
+          <AuthenticatedSupplierStack.Screen name = "OrderHistory" component={SupplierOrderHistoryScreen} />
         </AuthenticatedSupplierStack.Navigator>
       </NavigationContainer>
     )

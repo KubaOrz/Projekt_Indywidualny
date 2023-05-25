@@ -20,6 +20,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT o FROM Order o WHERE o.supplier.supplierEmail = :email AND o.status = 'IN_PROGRESS'")
     List<Order> findAllSupplierInProgressOrders(@Param("email") String email);
 
+    @Query("SELECT o FROM Order o WHERE o.purchaser.purchaserEmail = :email AND o.status = 'DELIVERED'")
+    Page<Order> findAllUserDeliveredOrders(Pageable pageable, @Param("email") String email);
+
+    @Query("SELECT o FROM Order o WHERE o.supplier.supplierEmail = :email AND o.status = 'DELIVERED'")
+    Page<Order> findAllSupplierDeliveredOrders(Pageable pageable, @Param("email") String email);
+
     Optional<Order> findById(Long id);
 
     Page<Order> findAll(Pageable pageable);

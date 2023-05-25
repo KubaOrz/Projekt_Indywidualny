@@ -1,25 +1,31 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { AxiosContext } from '../../AuthenticationScreens/AxiosContext';
-import { AuthContext } from '../../AuthenticationScreens/AuthContext';
 import LoadingSpinner from '../../UniversalComponents/LoadingSpinner';
 import EmptyListInfo from '../../UniversalComponents/EmptyListInfo';
 import Alert from '../../UniversalComponents/Alert';
 import OrdersList from '../OrdersList';
+import { AuthContext } from '../../AuthenticationScreens/AuthContext';
 
-export default function ActiveOrderScreen({navigation}) {
+export default function UserOrderHistoryScreen({navigation}) {
 
-    const [activeOrders, setActiveOrders] = useState([]);
+    const [ordersHistory, setOrdersHistory] = useState([]);
     const [status, setStatus] = useState('loading');
+    var page = useRef(null);
+    var isLast = useRef(false);
 
     const {getWithRefresh} = useContext(AxiosContext);
     const {getUserDetails} = useContext(AuthContext);
+    const url = useRef('/purchaser/orders/history/' + getUserDetails().email);
 
-    async function loadOrders() {
-        const {email} = getUserDetails();
-        const [data, error] = await getWithRefresh('/purchaser/orders/user-orders/' + email);
-        if (data) {
-            setActiveOrders(data);
+
+    async function loadOrders(url) {
+        const [data, error] = await getWithRefresh(url);
+        if (!error) {
+            const newUntakenOrders = ordersHistory.concat(data.content);
+            setOrdersHistory(newUntakenOrders);
+            page.current = data.number;
+            isLast.current = data.last;
             setStatus('ok');
         } else {
             console.log(error);
@@ -28,16 +34,23 @@ export default function ActiveOrderScreen({navigation}) {
     }
 
     useEffect(() => {
-        loadOrders();
-    }, [])
+        loadOrders(url.current);
+    }, []);
+
+    function loadMoreOrders() {
+        if (!isLast.current) {
+            loadOrders(url.current + '?page=' + (page.current + 1));
+        }
+    }
 
     function Body() {
         if (status === 'ok') {
-            if (activeOrders.length > 0) {
+            if (ordersHistory.length > 0) {
                 return (
                     <OrdersList
-                        orders = {activeOrders}
+                        orders = {ordersHistory}
                         navigation = {navigation}
+                        onEndReached = {loadMoreOrders}
                         displayType = {'USER'}
                     />
                 )
@@ -56,7 +69,7 @@ export default function ActiveOrderScreen({navigation}) {
 
     return (
          <View style = {styles.container}>
-            <Text style = {styles.title}>Twoje aktywne zamówienia</Text>
+            <Text style = {styles.title}>Historia Twoich zamówień</Text>
             
             <Body/>
 
