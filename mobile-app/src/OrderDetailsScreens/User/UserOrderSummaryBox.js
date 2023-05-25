@@ -34,7 +34,7 @@ export default function SupplierOrderSummaryBox({orderData}) {
         }
 
         return (
-            <Text style = {OrderDetailsStyles.summaryBoxDefaultText}>Podjąłeś zamówienie po 
+            <Text style = {OrderDetailsStyles.summaryBoxDefaultText}>Twoje zamówienie zostało podjęte po 
                 <Text style = {OrderDetailsStyles.summaryBoxHighlightedText}> {time} {minuteString}.</Text>
             </Text>
         )
@@ -55,10 +55,10 @@ export default function SupplierOrderSummaryBox({orderData}) {
 
             return (
                 <View>
-                    <Text style = {OrderDetailsStyles.summaryBoxDefaultText}>Dostarczenie zamówienia zajęło ci 
-                        <Text style = {OrderDetailsStyles.summaryBoxHighlightedText}> {deliveryTime} {deliveryMinuteString}.</Text>
+                    <Text style = {OrderDetailsStyles.summaryBoxDefaultText}>Dostawca zajęło 
+                        <Text style = {OrderDetailsStyles.summaryBoxHighlightedText}> {deliveryTime} {deliveryMinuteString}, aby dostarczyć Twoje zamówienie</Text>
                     </Text>
-                    <Text style = {OrderDetailsStyles.summaryBoxDefaultText}>Łączny czas oczekiwania to 
+                    <Text style = {OrderDetailsStyles.summaryBoxDefaultText}>Łącznie na zamówienie czekałeś 
                         <Text style = {OrderDetailsStyles.summaryBoxHighlightedText}> {totalTime} {totalMinuteString}.</Text>
                     </Text>
                 </View>

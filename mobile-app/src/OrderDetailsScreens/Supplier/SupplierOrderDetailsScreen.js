@@ -116,6 +116,7 @@ export default function SupplierOrderDetailsScreen({navigation, route}) {
                     title = {'Czy na pewno?'} 
                     message = {"Czy na pewno chcesz przyjąć to zamówienie?"} 
                     onClose = {() => startOrder()} 
+                    onDecline = {() => setShowOrderStartBox(false)}
                 />
             }
 
@@ -124,6 +125,7 @@ export default function SupplierOrderDetailsScreen({navigation, route}) {
                     title = {'Czy na pewno?'} 
                     message = {"Czy na pewno chcesz potwierdzić dostarczenie zamówienia?"} 
                     onClose = {() => finishOrder()} 
+                    onDecline = {() => setShowOrderFinishBox(false)}
                 />
             }
 

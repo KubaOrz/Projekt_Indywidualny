@@ -5,7 +5,7 @@ import LoadingSpinner from '../../UniversalComponents/LoadingSpinner';
 import Alert from '../../UniversalComponents/Alert';
 import ShoppingList from '../ShoppingList';
 import OrderDetailsStyles from '../../Styles/OrderDetailsStyles';
-import UserOrderDetailsBody from './UserOrderDetailsBox';
+import UserOrderDetailsBody from './UserOrderDetailsBody';
 
 export default function OrderDetailsScreen({navigation, route}) {
 

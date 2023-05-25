@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native"
 import OrderDetailsStyles from "../../Styles/OrderDetailsStyles";
 import { formatLocalDateTime } from "../../UniversalComponents/DateFormatter";
+import OrderInfoBoxItem from "../OrderInfoBoxItem";
 
 export default function SupplierOrderInfoBox({orderData}) {
 
@@ -21,34 +22,19 @@ export default function SupplierOrderInfoBox({orderData}) {
                     </View>
                 </View>
 
-                <View style = {OrderDetailsStyles.infoBoxItem}>
-                    <Text style = {OrderDetailsStyles.orderDetailsHeader}>Adres dostawy:</Text>
-                    <Text style = {[OrderDetailsStyles.orderDetailsText, OrderDetailsStyles.infoBoxItemRight]}>{address}</Text>
-                </View>
+                <OrderInfoBoxItem header = {'Adres dostawy'} data = {address} />
 
-                <View style = {OrderDetailsStyles.infoBoxItem}>
-                    <Text style = {OrderDetailsStyles.orderDetailsHeader}>Data zamówienia:</Text>
-                    <Text style = {[OrderDetailsStyles.orderDetailsText, OrderDetailsStyles.infoBoxItemRight]}>{formatLocalDateTime(new Date (orderDate))}</Text>
-                </View>
+                <OrderInfoBoxItem header = {'Data zamówienia'} data = {formatLocalDateTime(new Date (orderDate))} />
 
                 {status === 'IN_PROGRESS' &&
-                    <View style = {OrderDetailsStyles.infoBoxItem}>
-                        <Text style = {OrderDetailsStyles.orderDetailsHeader}>Data rozpoczęcia:</Text>
-                        <Text style = {[OrderDetailsStyles.orderDetailsText, OrderDetailsStyles.infoBoxItemRight]}>{formatLocalDateTime(new Date (pickUpDate))}</Text>
-                    </View>
+                    <OrderInfoBoxItem header = {'Data rozpoczęcia'} data = {formatLocalDateTime(new Date (pickUpDate))} />
                 }
 
                 {status === 'DELIVERED' &&
-                    <View style = {OrderDetailsStyles.infoBoxItem}>
-                        <Text style = {OrderDetailsStyles.orderDetailsHeader}>Data dostarczenia:</Text>
-                        <Text style = {[OrderDetailsStyles.orderDetailsText, OrderDetailsStyles.infoBoxItemRight]}>{formatLocalDateTime(new Date (deliveryDate))}</Text>
-                    </View>
+                    <OrderInfoBoxItem header = {'Data dostarczenia'} data = {formatLocalDateTime(new Date (deliveryDate))} />
                 }
 
-                <View style = {OrderDetailsStyles.infoBoxItem}>
-                    <Text style = {OrderDetailsStyles.orderDetailsHeader}>Wartość zamówienia:</Text>
-                    <Text style = {[OrderDetailsStyles.orderDetailsText, OrderDetailsStyles.infoBoxItemRight]}>{totalPrice.toFixed(2)} zł</Text>
-                </View>
+                <OrderInfoBoxItem header = {'Wartość zamówienia'} data = {totalPrice.toFixed(2) + " zł"} />
         </View>
     )
 };

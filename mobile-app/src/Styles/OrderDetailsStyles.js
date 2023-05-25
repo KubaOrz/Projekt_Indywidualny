@@ -90,5 +90,34 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         color: '#3b3e42',
         flex: 4
+    },
+
+    summaryBox: {
+        marginBottom: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        width: '100%',
+        padding: 15
+    },
+
+    summaryBoxTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: 'black',
+        textAlign: 'center',
+        marginBottom: 10
+    },
+
+    summaryBoxDefaultText: {
+        fontSize: 16,
+        color: 'black',
+        marginBottom: 5,
+        textAlign: 'justify'
+    },
+
+    summaryBoxHighlightedText: {
+        fontSize: 16,
+        color: '#C10D49',
+        fontWeight: 'bold'
     }
 });
