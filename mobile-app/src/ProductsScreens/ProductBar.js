@@ -118,11 +118,11 @@ const styles = StyleSheet.create({
     productMultChoiceBar: {
         flex: 1,
         flexDirection: 'row',
+        justifyContent: 'space-evenly',
         padding: 8
     },
 
     choiceBarSection: {
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
     },

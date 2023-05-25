@@ -111,6 +111,34 @@ public class OrderService {
                 .toList();
     }
 
+    public void finishOrder(Long id) {
+        Order order = orderRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Nie znaleziono zamówienia o id " + id)
+        );
+
+        order.setStatus(OrderStatus.DELIVERED);
+        order.setDeliveryDate(LocalDateTime.now());
+        orderRepository.save(order);
+    }
+
+    public Page<BasicOrderData> getUserDeliveredOrders(Pageable pageable, String email) {
+        Page<Order> deliveredOrders = orderRepository.findAllUserDeliveredOrders(pageable, email);
+        List<BasicOrderData> activeOrdersData = deliveredOrders.getContent().stream()
+                .map(order -> extractBasicOrderData(order))
+                .toList();
+
+        return new PageImpl<>(activeOrdersData, pageable, deliveredOrders.getTotalElements());
+    }
+
+    public Page<BasicOrderData> getSupplierDeliveredOrders(Pageable pageable, String email) {
+        Page<Order> deliveredOrders = orderRepository.findAllSupplierDeliveredOrders(pageable, email);
+        List<BasicOrderData> activeOrdersData = deliveredOrders.getContent().stream()
+                .map(order -> extractBasicOrderData(order))
+                .toList();
+
+        return new PageImpl<>(activeOrdersData, pageable, deliveredOrders.getTotalElements());
+    }
+
     private BasicOrderData extractBasicOrderData(Order order) {
         return new BasicOrderData(
                 order.getId(),
@@ -122,15 +150,5 @@ public class OrderService {
                 order.getStatus(),
                 order.getTotalPrice()
         );
-    }
-
-    public void finishOrder(Long id) {
-        Order order = orderRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Nie znaleziono zamówienia o id " + id)
-        );
-
-        order.setStatus(OrderStatus.DELIVERED);
-        order.setDeliveryDate(LocalDateTime.now());
-        orderRepository.save(order);
     }
 }

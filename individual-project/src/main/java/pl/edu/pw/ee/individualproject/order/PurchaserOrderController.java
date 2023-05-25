@@ -43,4 +43,14 @@ public class PurchaserOrderController {
     public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
         return ResponseEntity.ok(orderService.getOrderById(id));
     }
+
+    @GetMapping("/history/{email}")
+    public ResponseEntity<Page<BasicOrderData>> getUserDeliveredOrders(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @PathVariable String email) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<BasicOrderData> orders = orderService.getUserDeliveredOrders(pageable, email);
+        return ResponseEntity.ok(orders);
+    }
 }

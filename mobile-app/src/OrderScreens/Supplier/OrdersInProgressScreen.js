@@ -14,8 +14,8 @@ export default function OrdersInProgressScreen({navigation}) {
     const {getWithRefresh} = useContext(AxiosContext);
     const {getUserDetails} = useContext(AuthContext);
 
-    async function loadOrders(url) {
-        const [data, error] = await getWithRefresh(url);
+    async function loadOrders() {
+        const [data, error] = await getWithRefresh('/supplier/' + getUserDetails().email +  '/orders');
         if (!error) {
             setOrders(data);
             setStatus('ok');
@@ -26,7 +26,7 @@ export default function OrdersInProgressScreen({navigation}) {
     }
 
     useEffect(() => {
-        loadOrders('/supplier/' + getUserDetails().email +  '/orders');
+        loadOrders();
     }, []);
 
     function Body() {
