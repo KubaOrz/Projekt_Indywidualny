@@ -22,7 +22,8 @@ export default StyleSheet.create({
         height: 50,
         borderColor: 'white',
         borderWidth: 2,
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
+        marginTop: 20
     },
 
     textInput: {
