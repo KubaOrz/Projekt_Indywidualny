@@ -1,19 +1,24 @@
 import { useContext, useEffect, useState } from "react"
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native"
+import { ScrollView, View, Text, StyleSheet, Image, TouchableOpacity } from "react-native"
 import { AxiosContext } from "../AuthenticationScreens/AxiosContext"
 import { AuthContext } from "../AuthenticationScreens/AuthContext";
 import LoadingSpinner from "../UniversalComponents/LoadingSpinner";
 import Alert from "../UniversalComponents/Alert";
 import FormStyles from "../Styles/FormStyles";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import PasswordChangeForm from "./PasswordChangeForm";
 
 export default function ProfileScreen({navigation}) {
 
-    const {getWithRefresh} = useContext(AxiosContext);
+    const {getWithRefresh, authAxios} = useContext(AxiosContext);
     const {getUserDetails} = useContext(AuthContext);
 
     const [profileData, setProfileData] = useState(null);
     const [status, setStatus] = useState('loading');
+
+    const [showPasswordChangeForm, setShowPasswordChangeForm] = useState(false);
+    const [showPasswordChangeSuccess, setShowPasswordChangeSuccess] = useState(false);
+    const [showPasswordChangeError, setShowPasswordChangeError] = useState(false);
 
     function ProfileDataRow({header, text}) {
         return (
@@ -44,12 +49,33 @@ export default function ProfileScreen({navigation}) {
         }
     }
 
+    function sendPasswordChangeRequest(oldPassword, newPassword) {
+        let passwordChangeRequest = {
+            email: getUserDetails().email,
+            oldPassword: oldPassword,
+            newPassword: newPassword
+        }
+
+        authAxios.put('/auth/change-password', passwordChangeRequest)
+        .then(() => {
+            setShowPasswordChangeSuccess(true);
+        }).catch(error => {
+            setShowPasswordChangeError(true);
+            console.log(error);
+        });
+    };
+
+    function handleSuccess() {
+        setShowPasswordChangeSuccess(false);
+        setShowPasswordChangeForm(false);
+    }
+
     useEffect(() => {
         loadProfileData();
     }, []);
 
     return (
-        <View style = {styles.container}>
+        <ScrollView style = {styles.container}>
             <Text style = {styles.title}>Twój profil</Text>
             <View style = {styles.profileSection}>
 
@@ -72,10 +98,25 @@ export default function ProfileScreen({navigation}) {
                             <Text style = {FormStyles.defaultText}>Zmień dane</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress = {() => console.log('Zmień hasło')} style = {[FormStyles.defaultButton, {flexDirection: 'row'}]}>
+                        <TouchableOpacity onPress = {() => setShowPasswordChangeForm(true)} style = {[FormStyles.defaultButton, {flexDirection: 'row'}]}>
                             <Icon name="form-textbox-password" size={30} color="white" style = {{paddingRight: 10}}/>
                             <Text style = {FormStyles.defaultText}>Zmień hasło</Text>
                         </TouchableOpacity>
+
+                        {showPasswordChangeForm && 
+                            <PasswordChangeForm 
+                            onSubmit = {sendPasswordChangeRequest} 
+                            onCancel = {setShowPasswordChangeForm}
+                            />
+                        }
+
+                        {showPasswordChangeSuccess && 
+                            <Alert title = {'Sukces!'} message = {'Twoje hasło zostało pomyślnie zmienione!'} onClose={() => handleSuccess()}/>
+                        }
+
+                        {showPasswordChangeError && 
+                            <Alert title = {'Błąd!'} message = {'Nie udało się zmienić hasła!'} onClose={() => setShowPasswordChangeError(false)}/>
+                        }
 
                     </>
                 }
@@ -88,14 +129,13 @@ export default function ProfileScreen({navigation}) {
                     <Alert title = {'Błąd!'} message = {'Wystapił błąd przy połączeniu z serwerem!'} onClose={() => navigation.goBack()}/>
                 }
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
         backgroundColor: '#8232B9'
     },
 

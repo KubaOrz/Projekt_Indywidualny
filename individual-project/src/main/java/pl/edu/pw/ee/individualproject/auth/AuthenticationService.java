@@ -102,6 +102,19 @@ public class AuthenticationService {
         return new RefreshResponse(tokenStr, refreshTokenStr);
     }
 
+    public void changePassword(ChangePasswordRequest request) {
+        User user = repository.findByEmail(request.email()).orElseThrow(
+                () -> new UsernameNotFoundException("Podany użytkownik nie istnieje!")
+        );
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.email(), request.oldPassword())
+        );
+
+        user.setPassword(passwordEncoder.encode(request.newPassword()));
+        repository.save(user);
+    }
+
     private void revokeAllTokens(User user) {
         List<Token> userTokens = tokenRepository.findAllByUser(user);
 
