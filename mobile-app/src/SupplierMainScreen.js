@@ -60,7 +60,7 @@ export default function SupplierMainScreen({navigation}) {
                     label = {'Historia zamówień'} />
                     
                     <Tile
-                    onPress = {test} 
+                    onPress = {() => navigation.navigate('Profile')} 
                     backgroundImage = {require('../assets/postman.png')}
                     label = {'Profil'} />
                 </View>

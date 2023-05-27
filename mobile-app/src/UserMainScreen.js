@@ -60,7 +60,7 @@ export default function UserMainScreen({navigation}) {
                     label = {'Historia zamówień'} />
                     
                     <Tile
-                    onPress = {test} 
+                    onPress = {() => navigation.navigate('Profile')} 
                     backgroundImage = {require('../assets/user.png')}
                     label = {'Profil'} />
                 </View>
