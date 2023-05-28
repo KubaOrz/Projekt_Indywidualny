@@ -76,7 +76,7 @@ export default function PasswordChangeForm({onSubmit, onCancel}) {
 
                 <TouchableOpacity 
                 onPress = {() => onSubmit(oldPassword, newPassword)} 
-                style = {[FormStyles.defaultButton, {flexDirection: 'row', width: '40%'}]}
+                style = {[FormStyles.defaultButton, {flexDirection: 'row', width: '40%'}, acceptDisabled && {backgroundColor: '#736b68'}]}
                 disabled = {acceptDisabled}
                 >
                     <Icon name="check-circle" size={30} color="white" style = {{paddingRight: 10}}/>
@@ -90,6 +90,7 @@ export default function PasswordChangeForm({onSubmit, onCancel}) {
                     <Icon name="close-circle" size={30} color="white" style = {{paddingRight: 10}}/>
                     <Text style = {FormStyles.defaultText}>Anuluj</Text>
                 </TouchableOpacity>
+
             </View>
             
         </View>
