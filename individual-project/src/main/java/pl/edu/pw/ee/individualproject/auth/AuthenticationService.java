@@ -102,6 +102,25 @@ public class AuthenticationService {
         return new RefreshResponse(tokenStr, refreshTokenStr);
     }
 
+    public RefreshResponse refresh(User user) {
+        String tokenStr = jwtService.generateToken(user);
+        String refreshTokenStr = jwtService.generateRefreshToken(user);
+
+        RefreshToken newRefreshToken = refreshTokenRepository.findByUser(user).orElseThrow(
+                InvalidTokenException::new
+        );
+        newRefreshToken.setToken(refreshTokenStr);
+        refreshTokenRepository.save(newRefreshToken);
+
+        revokeAllTokens(user);
+        tokenRepository.save(Token.builder()
+                .token(tokenStr)
+                .revoked(false)
+                .user(user)
+                .build());
+        return new RefreshResponse(tokenStr, refreshTokenStr);
+    }
+
     public void changePassword(ChangePasswordRequest request) {
         User user = repository.findByEmail(request.email()).orElseThrow(
                 () -> new UsernameNotFoundException("Podany użytkownik nie istnieje!")

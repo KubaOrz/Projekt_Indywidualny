@@ -5,6 +5,7 @@ import { AxiosContext } from './AxiosContext';
 import FormStyles from '../Styles/FormStyles';
 import Alert from '../UniversalComponents/Alert';
 import * as SecureStore from 'expo-secure-store';
+import UserDataInputValidator from '../UniversalComponents/UserDataInputValidator';
 
 export default function RegisterForm(props) {
 
@@ -83,58 +84,23 @@ export default function RegisterForm(props) {
 
   function handleEmailInput(email) {
     setEmail(email);
-    validateEmail(email);
-  }
-
-  function validateEmail(email) {
-    const validEmailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    if (!validEmailRegex.test(email)) {
-      setEmailValidationError('Niepoprawny adres e-mail!');
-    } else {
-      setEmailValidationError('');
-    }
+    setEmailValidationError(UserDataInputValidator.validateEmail(email));
   }
 
   function handlePasswordInput(password) {
     setPassword(password);
-    validatePassword(password);
-  }
-
-  function validatePassword(password) {
-    const validPasswordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}$/;
-    if (!validPasswordRegex.test(password)) {
-      setPasswordValidationError('Hasło musi zawierać co najmniej 8 znaków, cyfrę i znak specjalny!');
-    } else {
-      setPasswordValidationError('');
-    }
+    setPasswordValidationError(UserDataInputValidator.validatePassword(password));
   }
 
   function handleConfirmPasswordInput(confirmPassword) {
     setConfirmPassword(confirmPassword);
-    checkPasswordEquality(confirmPassword);
-  }
-
-  function checkPasswordEquality(confirmPassword) {
-    if (!(confirmPassword === password)) {
-      setPasswordsEqualError('Podane hasła nie są takie same!');
-    } else {
-      setPasswordsEqualError('');
-    }
+    setPasswordsEqualError(UserDataInputValidator.checkPasswordEquality(confirmPassword, password));
   }
 
   function handlePhoneInput(phoneNumber) {
     setPhoneNumber(phoneNumber);
-    validatePhoneNumber(phoneNumber);
+    setPhoneValidationError(UserDataInputValidator.validatePhoneNumber(phoneNumber));
   }
-
-  function validatePhoneNumber(phoneNumber) {
-    const validPhoneRegex = /^[0-9]{9}$/;
-    if (!validPhoneRegex.test(phoneNumber)) {
-      setPhoneValidationError('Niepoprawny numer telefonu!');
-    } else {
-      setPhoneValidationError('');
-    }
-  };
 
   function handleSubmit() {
     if (emailValidationError || passwordValidationError || passwordsEqualError || phoneValidationError) {
