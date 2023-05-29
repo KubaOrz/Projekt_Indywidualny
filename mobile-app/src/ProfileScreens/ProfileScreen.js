@@ -7,11 +7,12 @@ import Alert from "../UniversalComponents/Alert";
 import FormStyles from "../Styles/FormStyles";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PasswordChangeForm from "./PasswordChangeForm";
+import ProfileEditionForm from "./ProfileEditionForm";
 
 export default function ProfileScreen({navigation}) {
 
     const {getWithRefresh, authAxios} = useContext(AxiosContext);
-    const {getUserDetails} = useContext(AuthContext);
+    const {getUserDetails, updateAuthState} = useContext(AuthContext);
 
     const [profileData, setProfileData] = useState(null);
     const [status, setStatus] = useState('loading');
@@ -19,6 +20,10 @@ export default function ProfileScreen({navigation}) {
     const [showPasswordChangeForm, setShowPasswordChangeForm] = useState(false);
     const [showPasswordChangeSuccess, setShowPasswordChangeSuccess] = useState(false);
     const [showPasswordChangeError, setShowPasswordChangeError] = useState(false);
+
+    const [showProfileEditionForm, setShowProfileEditionForm] = useState(false);
+    const [showProfileEditionSuccess, setShowProfileEditionSuccess] = useState(false);
+    const [showProfileEditionError, setShowProfileEditionError] = useState(false);
 
     function ProfileDataRow({header, text}) {
         return (
@@ -38,6 +43,7 @@ export default function ProfileScreen({navigation}) {
     }
 
     async function loadProfileData() {
+        console.log(getUserDetails().email);
         const [data, error] = await getWithRefresh('/users/' + getUserDetails().email);
         console.log(data);
         if (!error) {
@@ -65,9 +71,45 @@ export default function ProfileScreen({navigation}) {
         });
     };
 
-    function handleSuccess() {
+    function sendProfileEditionRequest(email, name, surname, phoneNumber) {
+        let profileEditionRequest = {
+            currentEmail: getUserDetails().email,
+            email,
+            name,
+            surname,
+            phoneNumber
+        }
+
+        authAxios.put('/users', profileEditionRequest)
+        .then(async (response) => {
+            console.log(response.data);
+            let newAuthState = response.data;
+            await updateAuthState(newAuthState);
+            setShowProfileEditionSuccess(true);
+        }).catch(error => {
+            setShowProfileEditionError(true);
+            console.log(error);
+        });
+    };
+
+    function handlePasswordChangeSuccess() {
         setShowPasswordChangeSuccess(false);
         setShowPasswordChangeForm(false);
+    }
+
+    function handleProfileEditionSuccess() {
+        setShowProfileEditionSuccess(false);
+        setShowProfileEditionForm(false);
+    }
+
+    function displayPasswordChangeForm() {
+        setShowPasswordChangeForm(true);
+        setShowProfileEditionForm(false);
+    }
+
+    function displayProfileEditionForm() {
+        setShowPasswordChangeForm(false);
+        setShowProfileEditionForm(true);
     }
 
     useEffect(() => {
@@ -93,12 +135,12 @@ export default function ProfileScreen({navigation}) {
                             <ProfileDataRow header = {'Typ konta: '} text = {profileData.role === 'ROLE_USER' ? 'zamawiający' : 'dostawca'}/>
                         </View>
 
-                        <TouchableOpacity onPress = {() => console.log('Zmień dane')} style = {[FormStyles.defaultButton, {flexDirection: 'row'}]}>
+                        <TouchableOpacity onPress = {() => displayProfileEditionForm()} style = {[FormStyles.defaultButton, {flexDirection: 'row'}]}>
                             <Icon name="form-select" size={30} color="white" style = {{paddingRight: 10}}/>
                             <Text style = {FormStyles.defaultText}>Zmień dane</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress = {() => setShowPasswordChangeForm(true)} style = {[FormStyles.defaultButton, {flexDirection: 'row'}]}>
+                        <TouchableOpacity onPress = {() => displayPasswordChangeForm()} style = {[FormStyles.defaultButton, {flexDirection: 'row'}]}>
                             <Icon name="form-textbox-password" size={30} color="white" style = {{paddingRight: 10}}/>
                             <Text style = {FormStyles.defaultText}>Zmień hasło</Text>
                         </TouchableOpacity>
@@ -111,11 +153,27 @@ export default function ProfileScreen({navigation}) {
                         }
 
                         {showPasswordChangeSuccess && 
-                            <Alert title = {'Sukces!'} message = {'Twoje hasło zostało pomyślnie zmienione!'} onClose={() => handleSuccess()}/>
+                            <Alert title = {'Sukces!'} message = {'Twoje hasło zostało pomyślnie zmienione!'} onClose={() => handlePasswordChangeSuccess()}/>
                         }
 
                         {showPasswordChangeError && 
                             <Alert title = {'Błąd!'} message = {'Nie udało się zmienić hasła!'} onClose={() => setShowPasswordChangeError(false)}/>
+                        }
+
+                        {showProfileEditionForm && 
+                            <ProfileEditionForm 
+                            profileData = {profileData}
+                            onSubmit = {sendProfileEditionRequest} 
+                            onCancel = {setShowProfileEditionForm}
+                            />
+                        }
+
+                        {showProfileEditionSuccess && 
+                            <Alert title = {'Sukces!'} message = {'Twój profil został zaktualizowany!'} onClose={() => handleProfileEditionSuccess()}/>
+                        }
+
+                        {showProfileEditionError && 
+                            <Alert title = {'Błąd!'} message = {'Nie udało się zaktualizować Twojego profilu!'} onClose={() => setShowProfileEditionError(false)}/>
                         }
 
                     </>

@@ -24,4 +24,14 @@ public class AuthenticationResponse {
         this.phoneNumber = user.getPhoneNumber();
         this.role = user.getRole();
     }
+
+    public AuthenticationResponse(User user) {
+        this.token = null;
+        this.refreshToken = null;
+        this.name = user.getName();
+        this.surname = user.getSurname();
+        this.email = user.getEmail();
+        this.phoneNumber = user.getPhoneNumber();
+        this.role = user.getRole();
+    }
 }

@@ -31,9 +31,16 @@ export default StyleSheet.create({
         borderRadius: 5,
         borderColor: 'white',
         width: '80%',
+        height: 50,
         padding: 5,
         marginBottom: 8,
         color: 'white',
+    },
+
+    uneditableTextInput: {
+        borderColor: '#736b68',
+        color: '#736b68',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
     },
 
     defaultText: {

@@ -2,6 +2,7 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-nativ
 import FormStyles from "../Styles/FormStyles"
 import { useRef, useState, useEffect } from "react"
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import UserDataInputValidator from "../UniversalComponents/UserDataInputValidator";
 
 export default function PasswordChangeForm({onSubmit, onCancel}) {
 
@@ -13,29 +14,12 @@ export default function PasswordChangeForm({onSubmit, onCancel}) {
 
     function handleNewPasswordInput(password) {
         setNewPassword(password);
-        validatePassword(password);
-    }
-    
-    function validatePassword(password) {
-        const validPasswordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}$/;
-        if (!validPasswordRegex.test(password)) {
-          setError('Hasło musi zawierać co najmniej 8 znaków, cyfrę i znak specjalny!');
-        } else {
-          setError('');
-        }
+        setError(UserDataInputValidator.validatePassword(password));
     }
     
     function handleConfirmPasswordInput(password) {
         setConfirmPassword(password);
-        checkPasswordEquality(password);
-    }
-
-    function checkPasswordEquality(confirmPassword) {
-        if (!(confirmPassword === newPassword)) {
-          setError('Podane hasła nie są takie same!');
-        } else {
-          setError('');
-        }
+        setError(UserDataInputValidator.checkPasswordEquality(password, newPassword));
     }
 
     useEffect(() => {
