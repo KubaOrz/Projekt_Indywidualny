@@ -6,12 +6,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.edu.pw.ee.individualproject.auth.DTO.*;
 import pl.edu.pw.ee.individualproject.auth.token.*;
 import pl.edu.pw.ee.individualproject.configuration.JWTService;
 import pl.edu.pw.ee.individualproject.exception.EntityNotFoundException;
 import pl.edu.pw.ee.individualproject.exception.InvalidTokenException;
 import pl.edu.pw.ee.individualproject.exception.UserAlreadyExistsException;
-import pl.edu.pw.ee.individualproject.exception.UserAlreadyLoggedInException;
 import pl.edu.pw.ee.individualproject.user.User;
 import pl.edu.pw.ee.individualproject.user.UserRepository;
 

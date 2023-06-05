@@ -3,13 +3,13 @@ import { CartContext } from "./CartContext";
 import { StyleSheet, Text, TouchableOpacity, Animated } from "react-native";
 
 export default function CartButton(props) {
-  const { cartState } = useContext(CartContext);
+  const {getProductsFromCart, getTotalPrice} = useContext(CartContext);
   const [showButton, setShowButton] = useState(false);
 
   const animatedValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (cartState.products.length > 0) {
+    if (getProductsFromCart().length > 0) {
       setShowButton(true);
 
       Animated.sequence([
@@ -19,7 +19,7 @@ export default function CartButton(props) {
 
     } else {
       setShowButton(false);
-    }}, [cartState]);
+    }}, [getProductsFromCart]);
 
     if (showButton) {
         return (
@@ -35,7 +35,7 @@ export default function CartButton(props) {
             >
               <TouchableOpacity onPress={() => props.onPress(true)}>
                 <Text style={styles.cartButtonText}>Pokaż koszyk</Text>
-                <Text style={styles.cartPriceText}>{cartState.totalPrice.toFixed(2)} zł</Text>
+                <Text style={styles.cartPriceText}>{getTotalPrice().toFixed(2)} zł</Text>
               </TouchableOpacity>
             </Animated.View>
           );

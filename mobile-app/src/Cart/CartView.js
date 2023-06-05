@@ -5,7 +5,7 @@ import CartItem from './CartItem';
 
 export default function CartView(props) {
 
-    const {cartState} = useContext(CartContext);
+    const {getTotalPrice, getProductsFromCart} = useContext(CartContext);
 
     const renderItem = ({ item }) => (
         <CartItem 
@@ -19,10 +19,10 @@ export default function CartView(props) {
       );
 
     useEffect(() => {
-        if (cartState.products.length === 0) {
+        if (getProductsFromCart().length === 0) {
             props.onClose(false);
         }
-    }, [cartState.products])
+    }, [getProductsFromCart])
 
     function openOrderForm() {
         props.navigation.navigate("OrderForm");
@@ -37,7 +37,7 @@ export default function CartView(props) {
 
                     <View style = {{flex: 7, width: '100%'}}>
                         <FlatList
-                            data = {cartState.products}
+                            data = {getProductsFromCart()}
                             renderItem = {renderItem}
                             keyExtractor={item => item.product.productId.toString()}
                             style = {{paddingTop: 10, paddingBottom: 10}}
@@ -47,7 +47,7 @@ export default function CartView(props) {
 
                     <View style = {styles.summaryBox}>
                         <TouchableOpacity onPress = {() => openOrderForm()} style = {[styles.summaryBoxButton, styles.orderButton]}>
-                            <Text style = {styles.summaryButtonText}>Zamów za {cartState.totalPrice.toFixed(2)} zł</Text>
+                            <Text style = {styles.summaryButtonText}>Zamów za {getTotalPrice().toFixed(2)} zł</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress = {() => props.onClose(false)} style = {[styles.summaryBoxButton, styles.returnButton]}>
                             <Text style = {styles.summaryButtonText}>Kontynuuj zakupy</Text>

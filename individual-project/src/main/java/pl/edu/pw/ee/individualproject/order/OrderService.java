@@ -13,7 +13,7 @@ import pl.edu.pw.ee.individualproject.order.DTO.OrderRequest;
 import pl.edu.pw.ee.individualproject.order.DTO.OrderStartRequest;
 import pl.edu.pw.ee.individualproject.products.Product;
 import pl.edu.pw.ee.individualproject.products.ProductRepository;
-import pl.edu.pw.ee.individualproject.user.UserService;
+import pl.edu.pw.ee.individualproject.user.IUserService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,11 +26,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final OrderItemRepository orderItemRepository;
-    private final UserService userService;
-
-    public Page<Order> getAllOrders(Pageable pageable) {
-        return orderRepository.findAll(pageable);
-    }
+    private final IUserService userService;
 
     @Transactional
     public Order createOrder(OrderRequest request) {

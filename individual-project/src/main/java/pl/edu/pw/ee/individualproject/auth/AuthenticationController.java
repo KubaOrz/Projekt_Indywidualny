@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.edu.pw.ee.individualproject.auth.token.RefreshRequest;
-import pl.edu.pw.ee.individualproject.auth.token.RefreshResponse;
+import pl.edu.pw.ee.individualproject.auth.DTO.*;
 
 @RestController
 @RequestMapping("/auth")

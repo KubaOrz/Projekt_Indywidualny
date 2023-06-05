@@ -51,12 +51,21 @@ function CartProvider({children}) {
         });
     }
 
+    function getProductsFromCart() {
+        return cartState.products;
+    }
+
+    function getTotalPrice() {
+        return cartState.totalPrice;
+    }
+
     return (
         <Provider value={{
-            cartState,
             addToCart,
             removeFromCart,
-            clearCart
+            clearCart,
+            getProductsFromCart,
+            getTotalPrice
         }}>
             {children}
         </Provider>
