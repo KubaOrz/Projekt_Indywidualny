@@ -1,4 +1,4 @@
-package pl.edu.pw.ee.individualproject.auth;
+package pl.edu.pw.ee.individualproject.auth.DTO;
 
 import lombok.Data;
 import pl.edu.pw.ee.individualproject.user.Role;

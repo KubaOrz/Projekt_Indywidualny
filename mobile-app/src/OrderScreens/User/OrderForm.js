@@ -10,8 +10,8 @@ import { StackActions } from '@react-navigation/native';
 export default function OrderForm({navigation}) {
 
     const {authState} = useContext(AuthContext);
-    const {cartState, clearCart} = useContext(CartContext);
-    const {authAxios} = useContext(AxiosContext);
+    const {getProductsFromCart, clearCart} = useContext(CartContext);
+    const {authAxios, postWithRefresh} = useContext(AxiosContext);
 
     const [city, setCity] = useState('');
     const [streetAddress, setStreetAddress] = useState('');
@@ -23,7 +23,7 @@ export default function OrderForm({navigation}) {
     const [showErrorBox, setShowErrorBox] = useState(false);
     const [showSuccessBox, setShowSuccessBox] = useState(false);
 
-    function createOrder() {
+    async function createOrder() {
         if (city && streetAddress && houseNumber) {
             orderRequest = {
                 purchaserEmail: authState.userDetails.email,
@@ -31,16 +31,14 @@ export default function OrderForm({navigation}) {
                 productList: createProductListDTO()
             }
 
-            authAxios.post('/purchaser/orders', orderRequest
-              ).then(() => {
+            const [data, error] = await postWithRefresh('/purchaser/orders', orderRequest);
+            if (!error) {
                 setShowSuccessBox(true);
                 clearCart();
-
-              }).catch(error => {
-                setShowErrorBox(true);
+            } else {
                 console.log(error);
-
-              });
+                setShowErrorBox(true);
+            }
         } else {
             setError('Pola miasto, ulica i numer domu są obowiązkowe!');
         }
@@ -59,7 +57,7 @@ export default function OrderForm({navigation}) {
     };
 
     function createProductListDTO() {
-        let products = [...cartState.products];
+        let products = getProductsFromCart();
         products = products.map(item => ({
             productId: item.product.productId,
             count: item.count

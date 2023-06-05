@@ -20,31 +20,32 @@ export default function SupplierOrderDetailsScreen({navigation, route}) {
     const url = useRef('/supplier/orders/');
     const {id} = route.params;
 
-    const {authAxios, getWithRefresh} = useContext(AxiosContext);
+    const {putWithRefresh, getWithRefresh} = useContext(AxiosContext);
     const {getUserDetails} = useContext(AuthContext);
 
-    function startOrder() {
-        authAxios.put('/supplier/orders', {
+    async function startOrder() {
+        const [data, error] = await putWithRefresh('/supplier/orders', {
             orderId: id,
             supplierEmail: getUserDetails().email
-        }).then(() => {
+        })
+        if (!error) {
             navigation.dispatch(StackActions.popToTop());
             navigation.navigate('OrderDetails', {id: id});
-        }).catch(error => {
+        } else {
             console.log(error);
             setStatus('error');
-        })
+        }
     }
 
-    function finishOrder() {
-        authAxios.put('/supplier/orders/' + id)
-        .then(() => {
+    async function finishOrder() {
+        const [data, error] = await putWithRefresh('/supplier/orders/' + id, null)
+        if (!error) {
             navigation.dispatch(StackActions.popToTop());
             navigation.navigate('OrderDetails', {id: id});
-        }).catch(error => {
+        } else {
             console.log(error);
             setStatus('error');
-        })
+        }
     }
 
     async function loadShops() {

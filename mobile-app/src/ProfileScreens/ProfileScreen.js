@@ -8,10 +8,11 @@ import FormStyles from "../Styles/FormStyles";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PasswordChangeForm from "./PasswordChangeForm";
 import ProfileEditionForm from "./ProfileEditionForm";
+import { StackActions } from "@react-navigation/native";
 
 export default function ProfileScreen({navigation}) {
 
-    const {getWithRefresh, authAxios} = useContext(AxiosContext);
+    const {getWithRefresh, putWithRefresh} = useContext(AxiosContext);
     const {getUserDetails, updateAuthState} = useContext(AuthContext);
 
     const [profileData, setProfileData] = useState(null);
@@ -43,9 +44,7 @@ export default function ProfileScreen({navigation}) {
     }
 
     async function loadProfileData() {
-        console.log(getUserDetails().email);
         const [data, error] = await getWithRefresh('/users/' + getUserDetails().email);
-        console.log(data);
         if (!error) {
             setProfileData(data);
             setStatus('ok');
@@ -55,23 +54,23 @@ export default function ProfileScreen({navigation}) {
         }
     }
 
-    function sendPasswordChangeRequest(oldPassword, newPassword) {
+    async function sendPasswordChangeRequest(oldPassword, newPassword) {
         let passwordChangeRequest = {
             email: getUserDetails().email,
             oldPassword: oldPassword,
             newPassword: newPassword
         }
 
-        authAxios.put('/auth/change-password', passwordChangeRequest)
-        .then(() => {
+        const {error} = await putWithRefresh('/auth/change-password', passwordChangeRequest);
+        if (!error) {
             setShowPasswordChangeSuccess(true);
-        }).catch(error => {
+        } else {
             setShowPasswordChangeError(true);
             console.log(error);
-        });
+        }
     };
 
-    function sendProfileEditionRequest(email, name, surname, phoneNumber) {
+    async function sendProfileEditionRequest(email, name, surname, phoneNumber) {
         let profileEditionRequest = {
             currentEmail: getUserDetails().email,
             email,
@@ -80,16 +79,14 @@ export default function ProfileScreen({navigation}) {
             phoneNumber
         }
 
-        authAxios.put('/users', profileEditionRequest)
-        .then(async (response) => {
-            console.log(response.data);
-            let newAuthState = response.data;
-            await updateAuthState(newAuthState);
+        const [data, error] = await putWithRefresh('/users', profileEditionRequest);
+        if (!error) {
+            await updateAuthState(data);
             setShowProfileEditionSuccess(true);
-        }).catch(error => {
+        } else {
             setShowProfileEditionError(true);
             console.log(error);
-        });
+        }
     };
 
     function handlePasswordChangeSuccess() {
@@ -100,6 +97,8 @@ export default function ProfileScreen({navigation}) {
     function handleProfileEditionSuccess() {
         setShowProfileEditionSuccess(false);
         setShowProfileEditionForm(false);
+        navigation.dispatch(StackActions.popToTop());
+        navigation.navigate('Profile');
     }
 
     function displayPasswordChangeForm() {

@@ -19,16 +19,6 @@ public class PurchaserOrderController {
 
     private final OrderService orderService;
 
-    // Test
-//    @GetMapping("")
-//    public ResponseEntity<Page<Order>> getAllOrders(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        Page<Order> orders = orderService.getAllOrders(pageable);
-//        return ResponseEntity.ok(orders);
-//    }
-
     @PostMapping("")
     public ResponseEntity<Order> createOrder(@RequestBody OrderRequest request) {
         return new ResponseEntity<>(orderService.createOrder(request), HttpStatus.CREATED);

@@ -2,9 +2,9 @@ package pl.edu.pw.ee.individualproject.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.edu.pw.ee.individualproject.auth.AuthenticationResponse;
+import pl.edu.pw.ee.individualproject.auth.DTO.AuthenticationResponse;
 import pl.edu.pw.ee.individualproject.auth.AuthenticationService;
-import pl.edu.pw.ee.individualproject.auth.token.RefreshResponse;
+import pl.edu.pw.ee.individualproject.auth.DTO.RefreshResponse;
 import pl.edu.pw.ee.individualproject.exception.EntityNotFoundException;
 import pl.edu.pw.ee.individualproject.exception.UserAlreadyExistsException;
 import pl.edu.pw.ee.individualproject.user.DTO.BasicPurchaserData;
@@ -16,11 +16,12 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements IUserService {
 
     private final UserRepository userRepository;
     private final AuthenticationService authenticationService;
 
+    @Override
     public BasicSupplierData getBasicSupplierData(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new EntityNotFoundException("Nie znaleziono dostawcy o podanym adresie email!")
@@ -33,6 +34,7 @@ public class UserService {
                 .build();
     }
 
+    @Override
     public BasicPurchaserData getBasicPurchaserData(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new EntityNotFoundException("Nie znaleziono zamawiającego o podanym adresie email!")
@@ -44,6 +46,7 @@ public class UserService {
                 .build();
     }
 
+    @Override
     public AuthenticationResponse changeUserProfile(ProfileEditionRequest request) {
         User user = userRepository.findByEmail(request.currentEmail()).orElseThrow(
                 () -> new EntityNotFoundException("Nie znaleziono użytkownika o podanym adresie email!")
@@ -71,6 +74,7 @@ public class UserService {
         return new AuthenticationResponse(user);
     }
 
+    @Override
     public UserProfileData getUserProfileData(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new EntityNotFoundException("Nie znaleziono użytkownika o podanym adresie email!")

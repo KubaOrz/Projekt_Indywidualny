@@ -1,4 +1,4 @@
-package pl.edu.pw.ee.individualproject.auth;
+package pl.edu.pw.ee.individualproject.auth.DTO;
 
 public record ChangePasswordRequest(
         String email,

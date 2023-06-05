@@ -1,11 +1,10 @@
 package pl.edu.pw.ee.individualproject.configuration;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import pl.edu.pw.ee.individualproject.auth.AuthenticationService;
-import pl.edu.pw.ee.individualproject.auth.RegisterRequest;
+import pl.edu.pw.ee.individualproject.auth.DTO.RegisterRequest;
 import pl.edu.pw.ee.individualproject.products.category.Category;
 import pl.edu.pw.ee.individualproject.products.Product;
 import pl.edu.pw.ee.individualproject.products.shop.Shop;

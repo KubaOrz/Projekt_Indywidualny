@@ -27,22 +27,67 @@ const AxiosProvider = ({children}) => {
         await authAxios.get(url) 
         .then((response) => {
             data = response.data;
-
         }).catch(async (error) => {
-            const [refreshStatus, token] = await refreshToken();
+            const [refreshStatus] = await refreshToken();
             if (refreshStatus === 'ok') {
-                await publicAxios.get(url, {
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  }
-                })
+                await authAxios.get(url)
                 .then((response) => {
                     data = response.data;
-
                 }).catch((error => {
                     fetchError = error;
                     console.log(error);
+                }))
+            } else {
+                error = refreshStatus;
+            }
+        });
 
+        return [data, fetchError];
+  }
+
+  async function postWithRefresh(url, request) {
+
+    var data = null;
+    var fetchError = null;
+
+        await authAxios.post(url, request) 
+        .then((response) => {
+            data = response.data;
+        }).catch(async (error) => {
+            const [refreshStatus] = await refreshToken();
+            if (refreshStatus === 'ok') {
+                await authAxios.post(url, request)
+                .then((response) => {
+                    data = response.data;
+                }).catch((error => {
+                    fetchError = error;
+                    console.log(error);
+                }))
+            } else {
+                error = refreshStatus;
+            }
+        });
+
+        return [data, fetchError];
+  }
+
+  async function putWithRefresh(url, request) {
+
+    var data = null;
+    var fetchError = null;
+
+        await authAxios.put(url, request) 
+        .then((response) => {
+            data = response.data;
+        }).catch(async (error) => {
+            const [refreshStatus] = await refreshToken();
+            if (refreshStatus === 'ok') {
+                await authAxios.put(url, request)
+                .then((response) => {
+                    data = response.data;
+                }).catch((error => {
+                    fetchError = error;
+                    console.log(error);
                 }))
             } else {
                 error = refreshStatus;
@@ -54,13 +99,13 @@ const AxiosProvider = ({children}) => {
 
   async function refreshToken() {
     var status = 'loading';
-    var newToken = null;
     await publicAxios.post('/auth/refresh', { 
         refreshToken: authContext.getRefreshToken() 
 
     }).then(async(response) => {
         const { token, refreshToken } = response.data;
 
+        currentToken.current = token;
         await authContext.setAuthState(state => {
            return {
             ...state,
@@ -71,13 +116,11 @@ const AxiosProvider = ({children}) => {
         await SecureStore.setItemAsync('token', JSON.stringify(token));
         await SecureStore.setItemAsync('refreshToken', JSON.stringify(refreshToken));
         status = 'ok';
-        newToken = token;
-        currentToken.current = token;
     }).catch((error) => {
         status = error;
     })
 
-    return [status, newToken];
+    return [status];
 }
 
   authAxios.interceptors.request.use(
@@ -94,7 +137,13 @@ const AxiosProvider = ({children}) => {
   );
 
   return (
-    <Provider value={{authAxios, publicAxios, getWithRefresh}}>
+    <Provider value={{
+      authAxios, 
+      publicAxios, 
+      getWithRefresh,
+      postWithRefresh,
+      putWithRefresh
+      }}>
       {children}
     </Provider>
   );

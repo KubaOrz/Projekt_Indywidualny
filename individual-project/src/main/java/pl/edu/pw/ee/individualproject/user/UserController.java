@@ -1,10 +1,9 @@
 package pl.edu.pw.ee.individualproject.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.edu.pw.ee.individualproject.auth.AuthenticationResponse;
+import pl.edu.pw.ee.individualproject.auth.DTO.AuthenticationResponse;
 import pl.edu.pw.ee.individualproject.user.DTO.ProfileEditionRequest;
 import pl.edu.pw.ee.individualproject.user.DTO.UserProfileData;
 
@@ -13,7 +12,7 @@ import pl.edu.pw.ee.individualproject.user.DTO.UserProfileData;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final IUserService userService;
 
     @GetMapping("/{email}")
     public ResponseEntity<UserProfileData> getUserProfileData(@PathVariable String email) {
